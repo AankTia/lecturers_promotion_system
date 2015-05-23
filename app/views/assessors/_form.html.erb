@@ -1,0 +1,65 @@
+<%= form_for(object) do |f| %>
+  <%= render "layouts/form_error_messages", object: object %>
+
+  <div class="box-body">
+    <div class="form-group">
+      <label>NIK</label>
+      <%= f.text_field :registration_number_of_employees, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <label>Nama</label>
+      <%= f.text_field :name, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <label>Tempat Lahir</label>
+      <%= f.text_field :place_of_birth, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <label>Tanggal Lahir</label>
+      <%= f.date_field :date_of_birth, class: "form-control" %>
+    </div>    
+    <div class="form-group">
+      <label>Jenis Kelamin</label>
+      <%= f.text_field :gender, class: "form-control" %>
+    </div>    
+    <div class="form-group">
+      <label>Status</label>
+      <%= f.text_field :marital_status, class: "form-control" %>
+    </div>    
+    <div class="form-group">
+      <label>Nomor Kontak</label>
+      <%= f.text_field :contact_number, class: "form-control" %>
+    </div>    
+    <div class="form-group">
+      <label>Pendidikan</label>
+      <%= f.text_field :education, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <label>Alamat</label>
+      <%= f.text_field :address_line_1, class: "form-control" %><br />
+      <%= f.text_field :address_line_2, class: "form-control" %><br />
+      <%= f.text_field :address_line_3, class: "form-control" %><br />
+      <%= f.text_field :address_line_4, class: "form-control" %>
+    </div>    
+    <div class="form-group">
+      <label>Posisi</label>
+      <%= f.text_field :position, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <label>Program Studi</label>
+      <%= f.collection_select(:study_program_id, StudyProgram.all, :id, :name, {include_blank: true}, {class: "form-control"}) %>
+    </div>    
+    <div class="form-group">
+      <label>Pangkat</label>
+      <%= f.collection_select(:rank_of_lecturer_id, RankOfLecturer.all, :id, :name, {include_blank: true}, {class: "form-control"}) %>
+    </div>    
+    <div class="form-group">
+      <label>Date of Addmission</label>
+      <%= f.date_field :date_of_addmission, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="box-footer">
+    <%= f.submit 'Save', class: "btn btn-primary" %>
+  </div>
+<% end %>

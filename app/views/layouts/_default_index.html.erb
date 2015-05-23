@@ -1,0 +1,39 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="box">
+      <div class="box-header">
+        <h3 class="box-title">Daftar <%= title %></h3>
+      </div>      
+      
+      <div class="margin">
+        <%= object.first.link_to_new if object.present?%>
+      </div>
+
+      
+      <div class="box-body table-responsive">
+        <div id="example1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+          <% if index_data.present? %>
+            <table id="example1" class="table table-bordered table-striped dataTable" aria-describedby="example1_info">
+              <thead>
+                <th>
+                <% index_data.first.each do |data| %>
+                  <th><%= data[:title] %></th>
+                <% end %>
+              </thead>
+              <tbody role="alert" aria-live="polite" aria-relevant="all">
+                <% index_data.each_with_index do |data, index| %>
+                  <tr>
+                    <td width="40"><%= index+1 %></td> 
+                    <% data.each do |d| %>
+                      <td><%= d[:value] %></td>
+                    <% end %>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

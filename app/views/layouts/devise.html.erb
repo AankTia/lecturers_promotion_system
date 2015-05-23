@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <%= render 'layouts/head' %>
+  <body>
+    <%= yield %>
+    <br /><br />
+    <div>
+      <% if Rails.env.development? %>
+        <%= debug(params)  %>
+      <% end %>
+    </div>
+
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  </body>
+</html>

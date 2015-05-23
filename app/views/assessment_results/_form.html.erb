@@ -1,0 +1,30 @@
+<%= form_for(object) do |f| %>
+  <%= render "layouts/form_error_messages", object: object %>
+
+  <div class="box-body">
+    <div class="form-group">
+      <label>Dosen</label>
+      <%= f.collection_select(:lecturer_id, Lecturer.all, :id, :name, {include_blank: true}, {class: "form-control"}) %>
+    </div>
+    <div class="form-group">
+      <label>Penilai</label>
+      <%= f.collection_select(:assessor_id, Assessor.all, :id, :name, {include_blank: true}, {class: "form-control"}) %>
+    </div>
+    <div class="form-group">
+      <label>Tanggal Awal Penilaian</label>
+      <%= f.date_field :start_date, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <label>Tanggal Akhir Penilaian</label>
+      <%= f.date_field :end_date, class: "form-control" %>
+    </div>
+
+    <%= f.fields_for :assessment_result_lines do |builder| %>
+      <%= render 'assessment_result_line_fields', f: builder  %>
+    <% end %>
+  </div>
+
+  <div class="box-footer">
+    <%= f.submit 'Save', class: "btn btn-primary" %>
+  </div>
+<% end %>

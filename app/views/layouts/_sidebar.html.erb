@@ -1,0 +1,18 @@
+<aside class="left-side sidebar-offcanvas">
+    <section class="sidebar">
+      <ul class="sidebar-menu">
+        <li><%= link_to 'Home', root_path %></li>
+        <li><%= link_to 'Fakultas', faculties_path %></li>
+        <li><%= link_to 'Program Studi', study_programs_path %></li>
+        <li><%= link_to 'Pangkat / Golongan', rank_of_lecturers_path %></li>
+        <li><%= link_to 'Penilai', assessors_path %></li>
+        <li><%= link_to 'Dosen', lecturers_path %></li>
+        <li><%= link_to 'Bobot Penilain', percentage_assessments_path %></li>
+        <li><%= link_to 'Penilain', assessment_results_path %></li>
+        <li><%= link_to 'Daftar Penilaian Pelaksanaan Pekerjaan (DP3)', list_of_ratings_execution_of_works_path %></li>
+        <li><%= link_to 'Kenaikan Pangkat', preferments_path %></li>
+        <li><%= link_to 'Kenaikan Pangkat Berkala', periodic_preferments_path %></li>
+        <li><%= link_to 'Log Out', destroy_user_session_path, method: 'delete' %></li>
+      </ul>
+    </section>
+  </aside>

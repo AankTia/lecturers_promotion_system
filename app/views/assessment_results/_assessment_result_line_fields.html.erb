@@ -1,0 +1,9 @@
+<div class="nested-fields">
+  <%= f.hidden_field :percentage_assessment_id, value: f.object.percentage_assessment_id %>
+  <div class="form-group">
+      <label><%= PercentageAssessment.find(f.object.percentage_assessment_id).try(:name) %></label>
+      <%= f.number_field :value, 
+                       step: 'any',
+                       class: "form-control" %>
+  </div>
+</div>

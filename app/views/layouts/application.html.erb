@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <%= render 'layouts/head' %>
+  
+  <body class="skin-blue">
+    <%= render 'layouts/topbar' %>
+
+    <div class="wrapper row-offcanvas row-offcanvas-left">
+      <%= render 'layouts/sidebar' %>
+
+      <aside class="right-side">
+        <%= render 'layouts/breadcrumb' %>
+        <section class="content">
+          <%= yield %>
+
+          <% if Rails.env.development? %>
+            <%= debug(params)  %>
+          <% end %>
+        </section>
+      </aside>
+    </div>
+
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  </body>
+</html>

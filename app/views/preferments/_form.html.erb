@@ -1,0 +1,30 @@
+<%= form_for(object) do |f| %>
+  <%= render "layouts/form_error_messages", object: object %>
+
+  <div class="box-body">
+    <div class="form-group">
+      <label>DP3</label>
+      <%= f.collection_select(:list_of_ratings_execution_of_work_id, ListOfRatingsExecutionOfWork.all, :id, :id, {include_blank: true}, {class: "form-control"}) %>
+    </div>
+    <div class="form-group">
+      <label>Pangat Baru</label>
+      <%= f.collection_select(:rank_of_lecturer_id, RankOfLecturer.all, :id, :name, {include_blank: true}, {class: "form-control"}) %>
+    </div>
+    <div class="form-group">
+      <label>No SK Kenaikan Pangkat</label>
+      <%= f.text_field :decision_letter_number, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <label>Tanggal Pengajuan Kenaikan Pangat</label>
+      <%= f.date_field :submissions_preferment_date, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <label>Tanggal Kenaikan Pangat</label>
+      <%= f.date_field :preferment_date, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="box-footer">
+    <%= f.submit 'Save', class: "btn btn-primary" %>
+  </div>
+<% end %>

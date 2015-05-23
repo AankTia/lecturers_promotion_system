@@ -1,0 +1,14 @@
+//=require js/jquery-ui-1.10.3.min.js
+//=require js/bootstrap.min.js
+//=require js/plugins/morris/morris.min.js
+//=require js/plugins/sparkline/jquery.sparkline.min.js
+//=require js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js
+//=require js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js
+//=require js/plugins/jqueryKnob/jquery.knob.js
+//=require js/plugins/daterangepicker/daterangepicker.js
+//=require js/plugins/datepicker/bootstrap-datepicker.js
+//=require js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js
+//=require js/plugins/iCheck/icheck.min.js
+//=require js/AdminLTE/app.js
+//=require js/AdminLTE/dashboard.js
+//=require js/AdminLTE/demo.js

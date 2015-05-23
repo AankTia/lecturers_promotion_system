@@ -1,0 +1,30 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: lecturers_promotion_system_development
+  pool: 5
+  host: 'localhost'
+  username: tiawidi
+  password: '877121'
+  min_messages: warning
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: lecturers_promotion_system_test
+  pool: 5
+  host: 'localhost'
+  username: tiawidi
+  password: '877121'
+  min_messages: warning
+
+
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: lecturers_promotion_system_production
+  pool: 5
+  host: 'localhost'
+  username: tiawidi
+  password: '877121'
+  min_messages: warning

@@ -1,0 +1,42 @@
+<%= form_for(object) do |f| %>
+  <%= render "layouts/form_error_messages", object: object %>
+
+  <div class="box-body">
+    <div class="form-group">
+      <label>Atasan Penilai</label>
+      <%= f.collection_select(:assessor_id, Assessor.all, :id, :name, {include_blank: true}, {class: "form-control"}) %>
+    </div>
+    <div class="form-group">
+      <label>Penilaian Dosen</label>
+      <%= f.collection_select(:assessment_result_id, AssessmentResult.all, :id, :code, {include_blank: true}, {class: "form-control"}) %>
+    </div>
+    <div class="form-group">
+      <label>Keberatan</label>
+      <%= f.text_area :objection, rows: 3, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <label>Tanggal Keberatan</label>
+      <%= f.date_field :objection_date, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <label>Tanggapan</label>
+      <%= f.text_area :response, rows: 3, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <label>Tanggal Tanggapan</label>
+      <%= f.date_field :response_date, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <label>Keputusan</label>
+      <%= f.text_area :decision, rows: 3, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <label>Tanggal Keputusan</label>
+      <%= f.date_field :decision_date, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="box-footer">
+    <%= f.submit 'Save', class: "btn btn-primary" %>
+  </div>
+<% end %>

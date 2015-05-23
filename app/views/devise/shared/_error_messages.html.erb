@@ -1,0 +1,13 @@
+<% if resource.errors.messages.present? %>
+  <div class="alert alert-danger alert-dismissable">
+    <i class="fa fa-ban"></i>
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <ul>
+      <% resource.errors.messages.each do |key, values| %>
+        <% values.each do |value| %>
+          <li><%= "#{key.to_s.humanize}, #{value}" %></li>
+        <% end %>
+      <% end %>      
+    </ul>
+  </div>
+<% end %>
