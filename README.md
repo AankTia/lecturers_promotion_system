@@ -1,2 +1,2 @@
-# lecturers_promotion_system
-Sistem Pendukung Keputusan untuk Kenaikan Pangkat Dosen berdasarkan Penilaian Pelaksanaan Pekerjaan (DP3)
+# Lecturers Promotion System
+Decision Support Systems to Increment Rank Lecturer by Rating Implementation Work
