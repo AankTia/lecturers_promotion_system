@@ -1,3 +1,4 @@
-<%= render "layouts/default_index", title: 'Program Studi', 
-                                    object: @object, 
-                                    index_data: @index_data %>
+<%= render "layouts/default_index", title: 'Program Studi',
+                                    paginate_object: @paginate_object,
+                                    index_data: @index_data,
+                                    decorated_object: StudyProgram.new.decorate %>

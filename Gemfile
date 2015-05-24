@@ -54,6 +54,9 @@ gem 'prawn-table'
 # Logic control
 gem 'transitions', require: ['transitions', 'active_model/transitions']
 
+# Pagination
+gem 'kaminari'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

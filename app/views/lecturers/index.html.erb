@@ -1,3 +1,4 @@
 <%= render "layouts/default_index", title: 'Dosen',
-                                    object: @object,
-                                    index_data: @index_data %>
+                                    paginate_object: @paginate_object,
+                                    index_data: @index_data,
+                                    decorated_object: Lecturer.new.decorate %>

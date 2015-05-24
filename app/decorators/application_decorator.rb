@@ -2,6 +2,7 @@ class ApplicationDecorator < Draper::Decorator
   include UrlDecorator
 
   delegate_all
+  delegate :current_page, :total_pages, :limit_value
 
   def default_crud
     [

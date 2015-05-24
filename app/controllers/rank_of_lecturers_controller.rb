@@ -2,9 +2,10 @@ class RankOfLecturersController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    @object = RankOfLecturer.all.order(updated_at: :desc).decorate    
+    @paginate_object = RankOfLecturer.order(updated_at: :desc).page(params[:page]).per(10)
     @index_data = []
-    @object.each {|o| @index_data << o.index_data}
+    decorated_objects = @paginate_object.decorate
+    decorated_objects.each {|o| @index_data << o.index_data}
   end
 
   def new
@@ -12,7 +13,7 @@ class RankOfLecturersController < ApplicationController
   end
 
   def create
-    @object = RankOfLecturer.new(rank_of_lecturer_params) 
+    @object = RankOfLecturer.new(rank_of_lecturer_params)
     if @object.save
       redirect_to @object
     else

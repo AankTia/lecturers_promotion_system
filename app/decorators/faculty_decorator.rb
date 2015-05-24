@@ -13,10 +13,6 @@ class FacultyDecorator < ApplicationDecorator
       {
         title: 'Name',
         value: name
-      },
-      {
-        title: 'Tanggal Dibuat',
-        value: created_at_format
       }
     ] + default_index_data
   end

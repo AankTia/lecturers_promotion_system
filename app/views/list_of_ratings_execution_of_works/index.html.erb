@@ -1,3 +1,4 @@
 <%= render "layouts/default_index", title: 'Daftar Penilaian Pelaksanaan Pekerjaan (DP3)',
-                                    object: @object,
-                                    index_data: @index_data %>
+                                    paginate_object: @paginate_object,
+                                    index_data: @index_data,
+                                    decorated_object: ListOfRatingsExecutionOfWork.new.decorate %>

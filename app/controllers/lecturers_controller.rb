@@ -2,9 +2,10 @@ class LecturersController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    @object = Lecturer.all.order(updated_at: :desc).decorate
+    @paginate_object = Lecturer.order(updated_at: :desc).page(params[:page]).per(10)
     @index_data = []
-    @object.each {|o| @index_data << o.index_data}
+    decorated_objects = @paginate_object.decorate
+    decorated_objects.each {|o| @index_data << o.index_data}
   end
 
   def new
