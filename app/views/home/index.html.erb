@@ -18,13 +18,15 @@
                   <tbody>
                     <tr>
                       <th>Dosen</th>
-                      <th>Nilai</th>
+                      <th>Nilai Pembobotan</th>
+                      <th>Nilai Rata-rata</th>
                       <th>Penilai</th>
                     </tr>
                     <% result[:assessment_results].each do |assessment_result| %>
                       <tr>
                         <td><%= assessment_result.lecturer.name %></td>
-                        <td><%= assessment_result.value %></td>
+                        <td><%= assessment_result.weighting_value %></td>
+                        <td><%= assessment_result.average_value %></td>
                         <td><%= assessment_result.assessor.name %></td>
                       </tr>
                     <% end %>

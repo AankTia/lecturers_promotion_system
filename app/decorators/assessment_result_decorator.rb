@@ -11,8 +11,12 @@ class AssessmentResultDecorator < ApplicationDecorator
         value: h.link_to(lecturer.try(:name), lecturer)
       },
       {
-        title: 'Total Nilai',
-        value: value
+        title: 'Nilai Pembobotan',
+        value: weighting_value
+      },
+      {
+        title: 'Nilai Rata-rata',
+        value: average_value
       },
       {
         title: 'Penilai',
@@ -42,9 +46,14 @@ class AssessmentResultDecorator < ApplicationDecorator
       {
         title: 'Dosen',
         value: h.link_to(lecturer.try(:name), object)
-      },      {
-        title: 'Total Nilai',
-        value: value
+      },
+      {
+        title: 'Nilai Pembobotan',
+        value: weighting_value
+      },
+      {
+        title: 'Nilai Rata-rata',
+        value: average_value
       },
       {
         title: 'Penilai',

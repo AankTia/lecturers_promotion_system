@@ -55,8 +55,9 @@ class AssessmentResultsController < ApplicationController
       line.update(value: BigDecimal.new(values[:value]))
     end
 
-    assessment_value = AssessmentResultCalculator.new(assessment_result: @object).assessment_value
-    @object.update(value: assessment_value)
+    assessment_result_calculator = AssessmentResultCalculator.new(assessment_result: @object)
+    @object.update(weighting_value: assessment_result_calculator.weighting_value)
+    @object.update(average_value: assessment_result_calculator.average_value)
 
     if @object.draft? && @object.save
       redirect_to @object

@@ -2,7 +2,10 @@ class HomeController < ApplicationController
   before_filter :authenticate_user!, :set_page_title
 
   def index
-    assessment_results = AssessmentResult.all.order(start_date: :desc, value: :desc)
+    assessment_results = AssessmentResult.order(
+                                            start_date: :desc,
+                                            weighting_value: :desc,
+                                            average_value: :desc)
 
     all_start_date = assessment_results.pluck(:start_date).uniq
     all_end_date = assessment_results.pluck(:end_date).uniq

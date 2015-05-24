@@ -25,13 +25,14 @@ ActiveRecord::Schema.define(version: 20150501123030) do
   end
 
   create_table "assessment_results", force: true do |t|
-    t.string   "code",                                               null: false
-    t.integer  "lecturer_id",                                        null: false
-    t.integer  "assessor_id",                                        null: false
-    t.date     "start_date",                                         null: false
-    t.date     "end_date",                                           null: false
-    t.decimal  "value",       precision: 20, scale: 4, default: 0.0, null: false
-    t.string   "state",                                              null: false
+    t.string   "code",                                                   null: false
+    t.integer  "lecturer_id",                                            null: false
+    t.integer  "assessor_id",                                            null: false
+    t.date     "start_date",                                             null: false
+    t.date     "end_date",                                               null: false
+    t.decimal  "weighting_value", precision: 20, scale: 4, default: 0.0, null: false
+    t.decimal  "average_value",   precision: 20, scale: 4, default: 0.0, null: false
+    t.string   "state",                                                  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
