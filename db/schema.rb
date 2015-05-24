@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20150501123030) do
     t.date     "start_date",                                         null: false
     t.date     "end_date",                                           null: false
     t.decimal  "value",       precision: 20, scale: 4, default: 0.0, null: false
+    t.string   "state",                                              null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -99,6 +100,7 @@ ActiveRecord::Schema.define(version: 20150501123030) do
     t.date     "response_date"
     t.string   "decision"
     t.date     "decision_date"
+    t.string   "state",                null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -117,6 +119,7 @@ ActiveRecord::Schema.define(version: 20150501123030) do
     t.integer  "preferment_id",              null: false
     t.date     "periodic_preferment_date",   null: false
     t.string   "periodic_preferment_number", null: false
+    t.string   "state",                      null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -132,6 +135,7 @@ ActiveRecord::Schema.define(version: 20150501123030) do
     t.string   "decision_letter_number",               null: false
     t.date     "submissions_preferment_date",          null: false
     t.date     "preferment_date",                      null: false
+    t.string   "state",                                null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

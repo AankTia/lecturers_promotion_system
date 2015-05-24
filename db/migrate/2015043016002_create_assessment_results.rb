@@ -7,7 +7,8 @@ class CreateAssessmentResults < ActiveRecord::Migration
       t.integer  :assessor_id, null: false # nama penilai
       t.date     :start_date, null: false
       t.date     :end_date, null: false
-      t.decimal :value, precision: 20, scale: 4, default: 0, null: false
+      t.decimal  :value, precision: 20, scale: 4, default: 0, null: false
+      t.string   :state, null: false
 
       t.timestamps
     end

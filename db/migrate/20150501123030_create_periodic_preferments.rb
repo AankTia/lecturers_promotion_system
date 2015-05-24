@@ -6,6 +6,7 @@ class CreatePeriodicPreferments < ActiveRecord::Migration
       t.integer :preferment_id, null: false # Id DP3 (Foreign Key)
       t.date    :periodic_preferment_date, null: false #Tgl kenaikan berkala
       t.string  :periodic_preferment_number, null: false #No surat berkala
+      t.string   :state, null: false
 
       t.timestamps
     end

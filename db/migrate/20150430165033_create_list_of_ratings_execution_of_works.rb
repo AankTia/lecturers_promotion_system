@@ -11,6 +11,7 @@ class CreateListOfRatingsExecutionOfWorks < ActiveRecord::Migration
       t.date     :response_date  #waktu keberatan
       t.string   :decision     #keputusan
       t.date     :decision_date  #waktu keputusan
+      t.string   :state, null: false
 
       t.timestamps
     end

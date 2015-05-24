@@ -1,4 +1,5 @@
 class Preferment < ActiveRecord::Base
+  include DefaultStateTransitions
 
   after_initialize :set_default_values, if: :new_record?
 

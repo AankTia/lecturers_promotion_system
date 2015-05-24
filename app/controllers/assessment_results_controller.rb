@@ -34,6 +34,7 @@ class AssessmentResultsController < ApplicationController
 
   def edit
     @object = AssessmentResult.find(params[:id])
+    redirect_to @object, flash: {alert: "Tidak bisa memperbaharui Penilaian"} unless @object.draft?
   end
 
   def update
@@ -50,7 +51,7 @@ class AssessmentResultsController < ApplicationController
     assessment_value = AssessmentResultCalculator.new(assessment_result: @object).assessment_value
     @object.update(value: assessment_value)
 
-    if @object.save
+    if @object.draft? && @object.save
       redirect_to @object
     else
       render 'edit'
@@ -59,10 +60,50 @@ class AssessmentResultsController < ApplicationController
 
   def destroy
     @object = AssessmentResult.find(params[:id])
-    if @object.destroy
+    if @object.draft? && @object.destroy
       redirect_to @object
     else
       redirect_to faculties_path
+    end
+  end
+
+  def confirm
+    @object = AssessmentResult.find(params[:id]).decorate
+    if @object.can_confirm?
+      @object.confirm!
+      redirect_to @object, flash: {notice: "Confirm Penilaian Success"}
+    else
+      redirect_to @object, flash: {alert: "Penilaian tidak bisa di Confirm"}
+    end
+  end
+
+  def revise
+    @object = AssessmentResult.find(params[:id]).decorate
+    if @object.can_revise?
+      @object.revise!
+      redirect_to @object, flash: {notice: "Revise Penilaian Success"}
+    else
+      redirect_to @object, flash: {alert: "Penilaian tidak bisa di Revise"}
+    end
+  end
+
+  def cancel
+    @object = AssessmentResult.find(params[:id]).decorate
+    if @object.can_cancel?
+      @object.cancel!
+      redirect_to @object, flash: {notice: "Penilaian berhasil di di batalkan"}
+    else
+      redirect_to @object, flash: {alert: "Penilaian tidak bisa di batalkan"}
+    end
+  end
+
+  def complete
+    @object = AssessmentResult.find(params[:id]).decorate
+    if @object.can_complete?
+      @object.complete!
+      redirect_to @object, flash: {notice: "Penilaian Complete"}
+    else
+      redirect_to @object, flash: {alert: "Penilaian tidak bisa Complete"}
     end
   end
 

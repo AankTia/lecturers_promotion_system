@@ -2,7 +2,7 @@ class PeriodicPrefermentDecorator < ApplicationDecorator
 
   def action
     [
-      default_crud,
+      default_state_action,
       link_to_export_pdf
     ].join(" ").html_safe
   end
@@ -20,8 +20,12 @@ class PeriodicPrefermentDecorator < ApplicationDecorator
       {
         title: 'Tanggal Kenaikan Pangkat Berkala',
         value: date_format_for(periodic_preferment_date)
+      },
+      {
+        title: 'Status',
+        value: state
       }
-    ] + default_index_data
+    ] + default_state_index_data
   end
 
   def show_data
@@ -37,13 +41,17 @@ class PeriodicPrefermentDecorator < ApplicationDecorator
       {
         title: 'Tanggal Kenaikan Pangkat Berkala',
         value: date_format_for(periodic_preferment_date)
+      },
+      {
+        title: 'Status',
+        value: state
       }
     ] + default_show_data
   end
 
   def link_to_export_pdf
     url = h.send("export_pdf_#{object_name_singularize}_url",object)
-    h.link_to "Export Surat Kenaikan Pangkat Berkala", url, class: "btn btn-success btn-sm"
+    h.link_to "Export Surat Kenaikan Pangkat Berkala", url, class: "btn btn-success btn-sm" if object.completed?
   end
 
 end

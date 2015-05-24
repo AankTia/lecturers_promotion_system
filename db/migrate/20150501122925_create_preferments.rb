@@ -12,6 +12,7 @@ class CreatePreferments < ActiveRecord::Migration
       t.string  :decision_letter_number, null: false #No SK pangkat
       t.date    :submissions_preferment_date, null: false #Tgl ajuan Kenaikan pangkat
       t.date    :preferment_date, null: false #Tgl Kenaikan pangkat
+      t.string   :state, null: false
 
       t.timestamps
     end

@@ -2,7 +2,7 @@ class ListOfRatingsExecutionOfWorkDecorator < ApplicationDecorator
 
   def action
     [
-      default_crud,
+      default_state_action,
       link_to_export_pdf
     ].join(" ").html_safe
   end
@@ -11,13 +11,17 @@ class ListOfRatingsExecutionOfWorkDecorator < ApplicationDecorator
     [
       {
         title: 'Dosen',
-        value: h.link_to(lecturer_name_by(assessment_result.lecturer_id), assessment_result.lecturer)
+        value:link_to_lecturer
       },
       {
         title: 'Atasan Penilai',
-        value: h.link_to(assessor.try(:name), assessor)
+        value: link_to_assessor
+      },
+      {
+        title: 'Status',
+        value: state
       }
-    ] + default_index_data
+    ] + default_state_index_data
   end
 
   def show_data
@@ -28,11 +32,11 @@ class ListOfRatingsExecutionOfWorkDecorator < ApplicationDecorator
       },
       {
         title: 'Dosen',
-        value: h.link_to(lecturer_name_by(assessment_result.lecturer_id), object)
+        value: link_to_lecturer
       },
       {
         title: 'Atasan Penilai',
-        value: h.link_to(assessor.try(:name), assessor)
+        value: link_to_assessor
       },
       {
         title: 'Keberatan',
@@ -57,8 +61,21 @@ class ListOfRatingsExecutionOfWorkDecorator < ApplicationDecorator
       {
         title: 'Tanggal Keputusan',
         value: date_format_for(decision_date)
+      },
+      {
+        title: 'Status',
+        value: state
       }
     ] + default_show_data
+  end
+
+  def link_to_lecturer
+    lecturer_name = lecturer_name_by(assessment_result.lecturer_id)
+    h.link_to(lecturer_name, assessment_result.lecturer)
+  end
+
+  def link_to_assessor
+    h.link_to(assessor.try(:name), assessor)
   end
 
   def lecturer_name_by(id)
@@ -79,7 +96,7 @@ class ListOfRatingsExecutionOfWorkDecorator < ApplicationDecorator
 
   def link_to_export_pdf
     url = h.send("export_pdf_#{object_name_singularize}_url",object)
-    h.link_to "Export PDF", url, class: "btn btn-success btn-sm"
+    h.link_to "Export PDF", url, class: "btn btn-success btn-sm" if object.completed?
   end
 
 end

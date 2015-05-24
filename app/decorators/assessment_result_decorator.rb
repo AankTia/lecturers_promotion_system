@@ -1,7 +1,7 @@
 class AssessmentResultDecorator < ApplicationDecorator
 
   def action
-    default_crud
+    default_state_action
   end
 
   def index_data
@@ -25,8 +25,12 @@ class AssessmentResultDecorator < ApplicationDecorator
       {
         title: 'Tanggal Akhir Penilaian',
         value: date_format_for(end_date)
+      },
+      {
+        title: 'Status',
+        value: state
       }
-    ] + default_index_data
+    ] + default_state_index_data
   end
 
   def show_data
@@ -54,6 +58,10 @@ class AssessmentResultDecorator < ApplicationDecorator
       {
         title: 'Tanggal Akhir Penilaian',
         value: date_format_for(end_date)
+      },
+      {
+        title: 'Status',
+        value: state
       }
     ] + default_show_data
   end

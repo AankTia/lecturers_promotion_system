@@ -1,7 +1,7 @@
 class PrefermentDecorator < ApplicationDecorator
 
   def action
-    default_crud
+    default_state_action
   end
 
   def index_data
@@ -21,8 +21,12 @@ class PrefermentDecorator < ApplicationDecorator
       {
         title: 'Tanggal Pengajuan Kenaikan Pangkat',
         value: date_format_for(submissions_preferment_date)
+      },
+      {
+        title: 'Status',
+        value: state
       }
-    ] + default_index_data
+    ] + default_state_index_data
   end
 
   def show_data
@@ -54,6 +58,10 @@ class PrefermentDecorator < ApplicationDecorator
       {
         title: 'Tanggal Kenaikan Pangkat',
         value: date_format_for(preferment_date)
+      },
+      {
+        title: 'Status',
+        value: state
       }
     ] + default_show_data
   end

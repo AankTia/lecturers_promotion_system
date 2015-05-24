@@ -1,12 +1,7 @@
 class AssessmentResult < ActiveRecord::Base
+  include DefaultStateTransitions
+
   attr_readonly :code
-
-  # after_initialize :set_default_values, if: :new_record?
-
-  # def set_default_values
-  #   self.start_date = Time.now
-  #   self.end_date = Time.now
-  # end
 
   belongs_to :lecturer
   belongs_to :assessor

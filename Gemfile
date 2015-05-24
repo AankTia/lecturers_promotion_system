@@ -51,6 +51,9 @@ gem 'jc-validates_timeliness'
 gem 'prawn'
 gem 'prawn-table'
 
+# Logic control
+gem 'transitions', require: ['transitions', 'active_model/transitions']
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
