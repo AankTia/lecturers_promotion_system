@@ -27,38 +27,5 @@ module DefaultStateTransitions
         transitions to: :closed, from: :completed
       end
     end
-
-    # searchable do
-    #   integer :id
-    #   string :state
-    #   time :created_at
-    #   time :updated_at
-    # end
   end
-
-  # module ClassMethods
-  #   def all_states
-  #     [:draft,:confirmed,:completed,:cancelled,:closed]
-  #   end
-
-  #   # def state_datatable_column_options
-  #   #   result = []
-  #   #   result << {
-  #   #     column: :state,
-  #   #     select2: self.all_states.map { |obj| [obj,obj] },
-  #   #     formatter: proc { |obj| obj.state_with_colour }
-  #   #   }
-  #   #   result << {
-  #   #     column: :created_at,
-  #   #     datetime: true,
-  #   #     display: I18n.t('created_at')
-  #   #   }
-  #   #   result << {
-  #   #     column: :updated_at,
-  #   #     datetime: true,
-  #   #     display: I18n.t('updated_at')
-  #   #   }
-  #   #   result
-  #   # end
-  # end
 end
