@@ -1,19 +1,22 @@
 class LecturersController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :set_page_title
 
   def index
     @paginate_object = Lecturer.order(updated_at: :desc).page(params[:page]).per(10)
     @index_data = []
     decorated_objects = @paginate_object.decorate
     decorated_objects.each {|o| @index_data << o.index_data}
+    set_breadcrumb_for_index
   end
 
   def new
     @object = Lecturer.new
+    set_breadcrum_for_new
   end
 
   def create
     @object = Lecturer.new(lecturer_params)
+    set_breadcrum_for_new
     if @object.save
       redirect_to @object
     else
@@ -23,15 +26,18 @@ class LecturersController < ApplicationController
 
   def show
     @object = Lecturer.find(params[:id]).decorate
+    set_breadcrumb_for_show(@object)
   end
 
   def edit
     @object = Lecturer.find(params[:id])
+    set_breadcrumb_for_edit(@object)
     redirect_to @object, flash: {alert: "Tidak bisa memperbaharui Dosen dalam status #{@object.state}"} unless @object.inactive?
   end
 
   def update
     @object = Lecturer.find(params[:id])
+    set_breadcrumb_for_edit(@object)
     if @object.inactive? && @object.update(lecturer_params)
       redirect_to @object
     else
@@ -87,5 +93,28 @@ private
                                      :education,
                                      :date_of_addmission,
                                      :contact_number)
+  end
+
+  def set_page_title
+    @page_title ||= 'Dosen'
+  end
+
+  def set_breadcrumb_for_index
+    add_breadcrumb @page_title, lecturers_url
+  end
+
+  def set_breadcrumb_for_show(object)
+    set_breadcrumb_for_index
+    add_breadcrumb object.name, lecturer_url(object)
+  end
+
+  def set_breadcrum_for_new
+    set_breadcrumb_for_index
+    add_breadcrumb "Buat Baru", new_lecturer_url
+  end
+
+  def set_breadcrumb_for_edit(object)
+    set_breadcrumb_for_show(object)
+    add_breadcrumb "Perbaharui", edit_lecturer_url(object)
   end
 end

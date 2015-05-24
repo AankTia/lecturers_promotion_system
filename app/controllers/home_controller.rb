@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :set_page_title
 
   def index
     assessment_results = AssessmentResult.all.order(start_date: :desc, value: :desc)
@@ -24,6 +24,12 @@ class HomeController < ApplicationController
         end
       end
     end
+  end
+
+private
+
+  def set_page_title
+    @page_title ||= 'Home'
   end
 
 end

@@ -1,19 +1,22 @@
 class PrefermentsController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :set_page_title
 
   def index
     @paginate_object = Preferment.order(updated_at: :desc).page(params[:page]).per(10)
     @index_data = []
     decorated_objects = @paginate_object.decorate
     decorated_objects.each {|o| @index_data << o.index_data}
+    set_breadcrumb_for_index
   end
 
   def new
     @object = Preferment.new
+    set_breadcrum_for_new
   end
 
   def create
     @object = Preferment.new(preferment_params)
+    set_breadcrum_for_new
     action = Preferment::Save.new(preferement: @object)
     if action.run
       redirect_to @object
@@ -24,15 +27,18 @@ class PrefermentsController < ApplicationController
 
   def show
     @object = Preferment.find(params[:id]).decorate
+    set_breadcrumb_for_show(@object)
   end
 
   def edit
     @object = Preferment.find(params[:id])
+    set_breadcrumb_for_edit(@object)
     redirect_to @object, flash: {alert: "Tidak bisa memperbaharui Kenaikan Pangkat."} unless @object.draft?
   end
 
   def update
     @object = Preferment.find(params[:id])
+    set_breadcrumb_for_edit(@object)
     if @object.draft? && @object.update(preferment_params)
       redirect_to @object
     else
@@ -98,5 +104,28 @@ private
                   :decision_letter_number,
                   :submissions_preferment_date,
                   :preferment_date)
+  end
+
+  def set_page_title
+    @page_title ||= 'Kenaikan Pangkat'
+  end
+
+  def set_breadcrumb_for_index
+    add_breadcrumb @page_title, preferments_url
+  end
+
+  def set_breadcrumb_for_show(object)
+    set_breadcrumb_for_index
+    add_breadcrumb object.decision_letter_number, preferment_url(object)
+  end
+
+  def set_breadcrum_for_new
+    set_breadcrumb_for_index
+    add_breadcrumb "Buat Baru", new_faculty_url
+  end
+
+  def set_breadcrumb_for_edit(object)
+    set_breadcrumb_for_show(object)
+    add_breadcrumb "Perbaharui", edit_preferment_url(object)
   end
 end

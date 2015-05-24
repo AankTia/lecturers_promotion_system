@@ -1,19 +1,22 @@
 class StudyProgramsController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :set_page_title
 
   def index
     @paginate_object = StudyProgram.order(updated_at: :desc).page(params[:page]).per(10)
     @index_data = []
     decorated_objects = @paginate_object.decorate
     decorated_objects.each {|o| @index_data << o.index_data}
+    set_breadcrumb_for_index
   end
 
   def new
     @object = StudyProgram.new
+    set_breadcrum_for_new
   end
 
   def create
     @object = StudyProgram.new(study_program_params)
+    set_breadcrum_for_new
     if @object.save
       redirect_to @object
     else
@@ -23,14 +26,17 @@ class StudyProgramsController < ApplicationController
 
   def show
     @object = StudyProgram.find(params[:id]).decorate
+    set_breadcrumb_for_show(@object)
   end
 
   def edit
     @object = StudyProgram.find(params[:id])
+    set_breadcrumb_for_edit(@object)
   end
 
   def update
     @object = StudyProgram.find(params[:id])
+    set_breadcrumb_for_edit(@object)
     if @object.update(study_program_params)
       redirect_to @object
     else
@@ -51,5 +57,28 @@ private
 
   def study_program_params
     params.require(:study_program).permit(:faculty_id, :code, :name, :description)
+  end
+
+  def set_page_title
+    @page_title ||= 'Program Studi'
+  end
+
+  def set_breadcrumb_for_index
+    add_breadcrumb @page_title, study_programs_url
+  end
+
+  def set_breadcrumb_for_show(object)
+    set_breadcrumb_for_index
+    add_breadcrumb "#{object.code} - #{object.name}", study_program_url(object)
+  end
+
+  def set_breadcrum_for_new
+    set_breadcrumb_for_index
+    add_breadcrumb "Buat Baru", new_faculty_url
+  end
+
+  def set_breadcrumb_for_edit(object)
+    set_breadcrumb_for_show(object)
+    add_breadcrumb "Perbaharui", edit_study_program_url(object)
   end
 end

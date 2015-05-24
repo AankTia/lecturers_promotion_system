@@ -1,19 +1,22 @@
 class ListOfRatingsExecutionOfWorksController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :set_page_title
 
   def index
     @paginate_object = ListOfRatingsExecutionOfWork.order(updated_at: :desc).page(params[:page]).per(10)
     @index_data = []
     decorated_objects = @paginate_object.decorate
     decorated_objects.each {|o| @index_data << o.index_data}
+    set_breadcrumb_for_index
   end
 
   def new
     @object = ListOfRatingsExecutionOfWork.new
+    set_breadcrum_for_new
   end
 
   def create
     @object = ListOfRatingsExecutionOfWork.new(list_of_ratings_execution_of_work_params)
+    set_breadcrum_for_new
     if @object.save
       redirect_to @object
     else
@@ -23,15 +26,18 @@ class ListOfRatingsExecutionOfWorksController < ApplicationController
 
   def show
     @object = ListOfRatingsExecutionOfWork.find(params[:id]).decorate
+    set_breadcrumb_for_show(@object)
   end
 
   def edit
     @object = ListOfRatingsExecutionOfWork.find(params[:id])
+    set_breadcrumb_for_edit(@object)
     redirect_to @object, flash: {alert: "Tidak bisa memperbaharui DP3."} unless @object.draft?
   end
 
   def update
     @object = ListOfRatingsExecutionOfWork.find(params[:id])
+    set_breadcrumb_for_edit(@object)
     if @object.draft? && @object.update(list_of_ratings_execution_of_work_params)
       redirect_to @object
     else
@@ -112,5 +118,28 @@ private
                   :response_date,
                   :decision,
                   :decision_date)
+  end
+
+  def set_page_title
+    @page_title ||= 'Daftar Penilaian Pelaksanaan Pekerjaan (DP3)'
+  end
+
+  def set_breadcrumb_for_index
+    add_breadcrumb 'DP3', list_of_ratings_execution_of_works_url
+  end
+
+  def set_breadcrumb_for_show(object)
+    set_breadcrumb_for_index
+    add_breadcrumb object.code, list_of_ratings_execution_of_work_url(object)
+  end
+
+  def set_breadcrum_for_new
+    set_breadcrumb_for_index
+    add_breadcrumb "Buat Baru", new_list_of_ratings_execution_of_work_url
+  end
+
+  def set_breadcrumb_for_edit(object)
+    set_breadcrumb_for_show(object)
+    add_breadcrumb "Perbaharui", edit_list_of_ratings_execution_of_work_url(object)
   end
 end

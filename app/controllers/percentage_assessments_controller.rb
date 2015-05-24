@@ -1,19 +1,22 @@
 class PercentageAssessmentsController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :set_page_title
 
   def index
     @paginate_object = PercentageAssessment.order(updated_at: :desc).page(params[:page]).per(10)
     @index_data = []
     decorated_objects = @paginate_object.decorate
     decorated_objects.each {|o| @index_data << o.index_data}
+    set_breadcrumb_for_index
   end
 
   def new
     @object = PercentageAssessment.new
+    set_breadcrum_for_new
   end
 
   def create
     @object = PercentageAssessment.new(percentage_assessment_params)
+    set_breadcrum_for_new
     if @object.save
       redirect_to @object
     else
@@ -23,14 +26,17 @@ class PercentageAssessmentsController < ApplicationController
 
   def show
     @object = PercentageAssessment.find(params[:id]).decorate
+    set_breadcrumb_for_show(@object)
   end
 
   def edit
     @object = PercentageAssessment.find(params[:id])
+    set_breadcrumb_for_edit(@object)
   end
 
   def update
     @object = PercentageAssessment.find(params[:id])
+    set_breadcrumb_for_edit(@object)
     if @object.update(percentage_assessment_params)
       redirect_to @object
     else
@@ -51,5 +57,28 @@ private
 
   def percentage_assessment_params
     params.require(:percentage_assessment).permit(:name, :description, :value)
+  end
+
+  def set_page_title
+    @page_title ||= 'Bobot Penilaian'
+  end
+
+  def set_breadcrumb_for_index
+    add_breadcrumb @page_title, percentage_assessments_url
+  end
+
+  def set_breadcrumb_for_show(object)
+    set_breadcrumb_for_index
+    add_breadcrumb object.name, percentage_assessment_url(object)
+  end
+
+  def set_breadcrum_for_new
+    set_breadcrumb_for_index
+    add_breadcrumb "Buat Baru", new_percentage_assessment_url
+  end
+
+  def set_breadcrumb_for_edit(object)
+    set_breadcrumb_for_show(object)
+    add_breadcrumb "Perbaharui", edit_percentage_assessment_url(object)
   end
 end

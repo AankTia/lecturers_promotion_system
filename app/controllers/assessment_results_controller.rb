@@ -1,11 +1,12 @@
 class AssessmentResultsController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :set_page_title
 
   def index
     @paginate_object = AssessmentResult.order(updated_at: :desc).page(params[:page]).per(10)
     @index_data = []
     decorated_objects = @paginate_object.decorate
     decorated_objects.each {|o| @index_data << o.index_data}
+    set_breadcrumb_for_index
   end
 
   def new
@@ -17,10 +18,12 @@ class AssessmentResultsController < ApplicationController
       )
     end
     @object = assessment_result
+    set_breadcrum_for_new
   end
 
   def create
     @object = AssessmentResult.new(assessment_result_params)
+    set_breadcrum_for_new
     action = DocumentAction::AssessmentResult::Save.new(assessment_result: @object)
     if action.run
       redirect_to @object
@@ -31,15 +34,18 @@ class AssessmentResultsController < ApplicationController
 
   def show
     @object = AssessmentResult.find(params[:id]).decorate
+    set_breadcrumb_for_show(@object)
   end
 
   def edit
     @object = AssessmentResult.find(params[:id])
+    set_breadcrumb_for_edit(@object)
     redirect_to @object, flash: {alert: "Tidak bisa memperbaharui Penilaian"} unless @object.draft?
   end
 
   def update
     @object = AssessmentResult.find(params[:id])
+    set_breadcrumb_for_edit(@object)
     @object.update(
       lecturer_id: assessment_result_params[:lecturer_id],
       assessor_id: assessment_result_params[:assessor_id]
@@ -121,5 +127,28 @@ private
                     :value,
                     :_destroy
                   ])
+  end
+
+  def set_page_title
+    @page_title ||= 'Penilaian'
+  end
+
+  def set_breadcrumb_for_index
+    add_breadcrumb @page_title, assessment_results_url
+  end
+
+  def set_breadcrumb_for_show(object)
+    set_breadcrumb_for_index
+    add_breadcrumb object.code, assessment_results_url(object)
+  end
+
+  def set_breadcrum_for_new
+    set_breadcrumb_for_index
+    add_breadcrumb "Buat Baru", new_assessment_result_url
+  end
+
+  def set_breadcrumb_for_edit(object)
+    set_breadcrumb_for_show(object)
+    add_breadcrumb "Perbaharui", assessment_results_url(object)
   end
 end
