@@ -1,4 +1,5 @@
 class Assessor < ActiveRecord::Base
+  include ActiveInactiveStateTransitions
 
   belongs_to :study_program
   belongs_to :rank_of_lecturer
@@ -18,5 +19,5 @@ class Assessor < ActiveRecord::Base
   validates :date_of_addmission,  presence: true,
                                   timeliness: { type: :date}
   validates :marital_status,      presence: true
-  
+
 end

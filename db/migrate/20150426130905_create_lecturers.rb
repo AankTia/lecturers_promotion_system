@@ -17,6 +17,7 @@ class CreateLecturers < ActiveRecord::Migration
       t.string  :education, null: false #Pendidikan
       t.date    :date_of_addmission, null: false #Tanggal Masuk
       t.string  :contact_number #Nomor Kontak
+      t.string  :state, null: false
 
       t.timestamps
     end

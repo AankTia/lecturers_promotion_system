@@ -1,7 +1,7 @@
 class AssessorDecorator < ApplicationDecorator
 
   def action
-    default_crud
+    active_inactive_state_action
   end
 
   def index_data
@@ -13,8 +13,12 @@ class AssessorDecorator < ApplicationDecorator
       {
         title: 'Nama',
         value: name
+      },
+      {
+        title: 'Status',
+        value: state
       }
-    ] + default_index_data
+    ] + active_inactive_state_index_data
   end
 
   def show_data
@@ -66,6 +70,10 @@ class AssessorDecorator < ApplicationDecorator
       {
         title: 'Tanggal Masuk',
         value: date_format_for(date_of_addmission)
+      },
+      {
+        title: 'Status',
+        value: state
       }
     ] + default_show_data
   end

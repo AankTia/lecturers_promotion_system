@@ -17,6 +17,7 @@ class CreateAssessors < ActiveRecord::Migration
       t.string  :education, null: false #Pensisikan
       t.date    :date_of_addmission, null: false #Tanggal Masuk
       t.string  :contact_number #Kontak
+      t.string  :state, null: false
 
       t.timestamps
     end

@@ -2,7 +2,7 @@ class LecturersController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    @object = Lecturer.all.order(updated_at: :desc).decorate    
+    @object = Lecturer.all.order(updated_at: :desc).decorate
     @index_data = []
     @object.each {|o| @index_data << o.index_data}
   end
@@ -12,7 +12,7 @@ class LecturersController < ApplicationController
   end
 
   def create
-    @object = Lecturer.new(lecturer_params) 
+    @object = Lecturer.new(lecturer_params)
     if @object.save
       redirect_to @object
     else
@@ -26,11 +26,12 @@ class LecturersController < ApplicationController
 
   def edit
     @object = Lecturer.find(params[:id])
+    redirect_to @object, flash: {alert: "Tidak bisa memperbaharui Dosen dalam status #{@object.state}"} unless @object.inactive?
   end
 
   def update
     @object = Lecturer.find(params[:id])
-    if @object.update(lecturer_params)
+    if @object.inactive? && @object.update(lecturer_params)
       redirect_to @object
     else
       render 'edit'
@@ -39,10 +40,30 @@ class LecturersController < ApplicationController
 
   def destroy
     @object = Lecturer.find(params[:id])
-    if @object.destroy
+    if @object.inactive? && @object.destroy
       redirect_to @object
     else
       redirect_to faculties_path
+    end
+  end
+
+  def activate
+    @object = Lecturer.find(params[:id])
+    if @object.can_activate?
+      @object.activate!
+      redirect_to @object, flash: {notice: "Berhasil mengaktifkan Dosen."}
+    else
+      redirect_to @object, flash: {alert: "Gagal mengaktifkan Dosen."}
+    end
+  end
+
+  def deactivate
+    @object = Lecturer.find(params[:id])
+    if @object.can_deactivate?
+      @object.deactivate!
+      redirect_to @object, flash: {notice: "Berhasil menonaktifkan Dosen."}
+    else
+      redirect_to @object, flash: {alert: "Gagal menonaktifkan Dosen."}
     end
   end
 

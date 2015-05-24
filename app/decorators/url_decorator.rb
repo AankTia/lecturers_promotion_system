@@ -37,5 +37,13 @@ module UrlDecorator
     h.send("complete_#{object_name_singularize}_url",object)
   end
 
+  def activate_object_url
+    h.send("activate_#{object_name_singularize}_url",object)
+  end
+
+  def deactivate_object_url
+    h.send("deactivate_#{object_name_singularize}_url",object)
+  end
+
 
 end

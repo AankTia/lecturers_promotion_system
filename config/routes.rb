@@ -7,14 +7,20 @@ Rails.application.routes.draw do
   resources :study_programs
   resources :percentage_assessments
   resources :rank_of_lecturers
-  resources :lecturers
+  resources :lecturers do
+    post :activate,   on: :member
+    post :deactivate, on: :member
+  end
   resources :assessment_results do
     post :confirm,  on: :member
     post :revise,   on: :member
     post :cancel,   on: :member
     post :complete, on: :member
   end
-  resources :assessors
+  resources :assessors do
+    post :activate,   on: :member
+    post :deactivate, on: :member
+  end
   resources :list_of_ratings_execution_of_works do
     get :export_pdf, on: :member
     post :confirm,  on: :member

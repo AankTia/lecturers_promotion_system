@@ -12,7 +12,7 @@ class AssessorsController < ApplicationController
   end
 
   def create
-    @object = Assessor.new(assessor_params) 
+    @object = Assessor.new(assessor_params)
     if @object.save
       redirect_to @object
     else
@@ -26,11 +26,12 @@ class AssessorsController < ApplicationController
 
   def edit
     @object = Assessor.find(params[:id])
+    redirect_to @object, flash: {alert: "Tidak bisa memperbaharui Penilai dalam status #{@object.state}"} unless @object.inactive?
   end
 
   def update
     @object = Assessor.find(params[:id])
-    if @object.update(assessor_params)
+    if @object.inactive? && @object.update(assessor_params)
       redirect_to @object
     else
       render 'edit'
@@ -39,10 +40,30 @@ class AssessorsController < ApplicationController
 
   def destroy
     @object = Assessor.find(params[:id])
-    if @object.destroy
+    if @object.inactive? && @object.destroy
       redirect_to @object
     else
       redirect_to faculties_path
+    end
+  end
+
+  def activate
+    @object = Assessor.find(params[:id])
+    if @object.can_activate?
+      @object.activate!
+      redirect_to @object, flash: {notice: "Berhasil mengaktifkan Penilai."}
+    else
+      redirect_to @object, flash: {alert: "Gagal mengaktifkan Penilai."}
+    end
+  end
+
+  def deactivate
+    @object = Assessor.find(params[:id])
+    if @object.can_deactivate?
+      @object.deactivate!
+      redirect_to @object, flash: {notice: "Berhasil menonaktifkan Penilai."}
+    else
+      redirect_to @object, flash: {alert: "Gagal menonaktifkan Penilai."}
     end
   end
 

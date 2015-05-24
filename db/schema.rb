@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(version: 20150501123030) do
     t.string   "education",                        null: false
     t.date     "date_of_addmission",               null: false
     t.string   "contact_number"
+    t.string   "state",                            null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -86,6 +87,7 @@ ActiveRecord::Schema.define(version: 20150501123030) do
     t.string   "education",                        null: false
     t.date     "date_of_addmission",               null: false
     t.string   "contact_number"
+    t.string   "state",                            null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
