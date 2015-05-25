@@ -64,7 +64,8 @@ private
           .permit(
             :name,
             :description,
-            :symbol
+            :symbol,
+            :basic_salary
           )
   end
 
