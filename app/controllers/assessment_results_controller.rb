@@ -4,7 +4,7 @@ class AssessmentResultsController < ApplicationController
   def index
     @paginate_object = AssessmentResult.order(updated_at: :desc).page(params[:page]).per(10)
     @index_data = []
-    decorated_objects = @paginate_object.decorate
+    decorated_objects = decorate @paginate_object
     decorated_objects.each {|o| @index_data << o.index_data}
     set_breadcrumb_for_index
   end
@@ -33,25 +33,25 @@ class AssessmentResultsController < ApplicationController
   end
 
   def show
-    @object = AssessmentResult.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_show(@object)
   end
 
   def edit
-    @object = AssessmentResult.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_edit(@object)
     redirect_to @object, flash: {alert: "Tidak bisa memperbaharui Penilaian"} unless @object.draft?
   end
 
   def update
-    @object = AssessmentResult.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_edit(@object)
     @object.update(
       lecturer_id: assessment_result_params[:lecturer_id],
       assessor_id: assessment_result_params[:assessor_id]
     )
     assessment_result_params[:assessment_result_lines_attributes].each do |key, values|
-      line = @object.assessment_result_lines.find_by(percentage_assessment_id: values[:percentage_assessment_id].to_i)
+      line = @object.assessment_result_lines.find_by_and_decorate(percentage_assessment_id: values[:percentage_assessment_id].to_i)
       line.update(value: BigDecimal.new(values[:value]))
     end
 
@@ -67,7 +67,7 @@ class AssessmentResultsController < ApplicationController
   end
 
   def destroy
-    @object = AssessmentResult.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     if @object.draft? && @object.destroy
       redirect_to @object
     else
@@ -76,7 +76,7 @@ class AssessmentResultsController < ApplicationController
   end
 
   def confirm
-    @object = AssessmentResult.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     if @object.can_confirm?
       @object.confirm!
       redirect_to @object, flash: {notice: "Confirm Penilaian Success"}
@@ -86,7 +86,7 @@ class AssessmentResultsController < ApplicationController
   end
 
   def revise
-    @object = AssessmentResult.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     if @object.can_revise?
       @object.revise!
       redirect_to @object, flash: {notice: "Revise Penilaian Success"}
@@ -96,7 +96,7 @@ class AssessmentResultsController < ApplicationController
   end
 
   def cancel
-    @object = AssessmentResult.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     if @object.can_cancel?
       @object.cancel!
       redirect_to @object, flash: {notice: "Penilaian berhasil di di batalkan"}
@@ -106,7 +106,7 @@ class AssessmentResultsController < ApplicationController
   end
 
   def complete
-    @object = AssessmentResult.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     if @object.can_complete?
       @object.complete!
       redirect_to @object, flash: {notice: "Penilaian Complete"}
@@ -117,17 +117,23 @@ class AssessmentResultsController < ApplicationController
 
 private
 
+  def find_by_and_decorate(id)
+    decorate AssessmentResult.find(id)
+  end
+
   def assessment_result_params
     params.require(:assessment_result)
-          .permit(:lecturer_id,
-                  :assessor_id,
-                  :start_date,
-                  :end_date,
-                  assessment_result_lines_attributes: [
-                    :percentage_assessment_id,
-                    :value,
-                    :_destroy
-                  ])
+          .permit(
+            :lecturer_id,
+            :assessor_id,
+            :start_date,
+            :end_date,
+            assessment_result_lines_attributes: [
+              :percentage_assessment_id,
+              :value,
+              :_destroy
+            ]
+          )
   end
 
   def set_page_title

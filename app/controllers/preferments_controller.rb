@@ -4,7 +4,7 @@ class PrefermentsController < ApplicationController
   def index
     @paginate_object = Preferment.order(updated_at: :desc).page(params[:page]).per(10)
     @index_data = []
-    decorated_objects = @paginate_object.decorate
+    decorated_objects = decorate @paginate_object
     decorated_objects.each {|o| @index_data << o.index_data}
     set_breadcrumb_for_index
   end
@@ -26,18 +26,18 @@ class PrefermentsController < ApplicationController
   end
 
   def show
-    @object = Preferment.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_show(@object)
   end
 
   def edit
-    @object = Preferment.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_edit(@object)
     redirect_to @object, flash: {alert: "Tidak bisa memperbaharui Kenaikan Pangkat."} unless @object.draft?
   end
 
   def update
-    @object = Preferment.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_edit(@object)
     if @object.draft? && @object.update(preferment_params)
       redirect_to @object
@@ -47,7 +47,7 @@ class PrefermentsController < ApplicationController
   end
 
   def destroy
-    @object = Preferment.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     if @object.draft? && @object.destroy
       redirect_to @object
     else
@@ -56,7 +56,7 @@ class PrefermentsController < ApplicationController
   end
 
   def confirm
-    @object = Preferment.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     if @object.can_confirm?
       @object.confirm!
       redirect_to @object, flash: {notice: "Confirm Kenaikan Pangkat Success"}
@@ -66,7 +66,7 @@ class PrefermentsController < ApplicationController
   end
 
   def revise
-    @object = Preferment.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     if @object.can_revise?
       @object.revise!
       redirect_to @object, flash: {notice: "Revise Kenaikan Pangkat Success"}
@@ -76,7 +76,7 @@ class PrefermentsController < ApplicationController
   end
 
   def cancel
-    @object = Preferment.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     if @object.can_cancel?
       @object.cancel!
       redirect_to @object, flash: {notice: "Kenaikan Pangkat berhasil di di batalkan"}
@@ -86,7 +86,7 @@ class PrefermentsController < ApplicationController
   end
 
   def complete
-    @object = Preferment.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     if @object.can_complete?
       @object.complete!
       redirect_to @object, flash: {notice: "Kenaikan Pangkat Complete"}
@@ -97,13 +97,19 @@ class PrefermentsController < ApplicationController
 
 private
 
+  def find_by_and_decorate(id)
+    decorate Preferment.find(id)
+  end
+
   def preferment_params
     params.require(:preferment)
-          .permit(:list_of_ratings_execution_of_work_id,
-                  :rank_of_lecturer_id,
-                  :decision_letter_number,
-                  :submissions_preferment_date,
-                  :preferment_date)
+          .permit(
+            :list_of_ratings_execution_of_work_id,
+            :rank_of_lecturer_id,
+            :decision_letter_number,
+            :submissions_preferment_date,
+            :preferment_date
+          )
   end
 
   def set_page_title

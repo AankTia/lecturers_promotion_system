@@ -5,7 +5,7 @@ class FacultiesController < ApplicationController
     @paginate_object = Faculty.order(updated_at: :desc).page(params[:page]).per(10)
     set_breadcrumb_for_index
     @index_data = []
-    decorated_objects = @paginate_object.decorate
+    decorated_objects = decorate @paginate_object
     decorated_objects.each {|o| @index_data << o.index_data}
   end
 
@@ -24,17 +24,17 @@ class FacultiesController < ApplicationController
   end
 
   def show
-    @object = Faculty.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_show @object
   end
 
   def edit
-    @object = Faculty.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_edit(@object)
   end
 
   def update
-    @object = Faculty.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_edit(@object)
     if @object.update(faculty_params)
       redirect_to @object
@@ -44,7 +44,7 @@ class FacultiesController < ApplicationController
   end
 
   def destroy
-    @object = Faculty.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     if @object.destroy
       redirect_to @object
     else
@@ -54,8 +54,17 @@ class FacultiesController < ApplicationController
 
 private
 
+  def find_by_and_decorate(id)
+    decorate Faculty.find(id)
+  end
+
   def faculty_params
-    params.require(:faculty).permit(:code, :name, :description)
+    params.require(:faculty)
+          .permit(
+            :code,
+            :name,
+            :description
+          )
   end
 
   def set_page_title

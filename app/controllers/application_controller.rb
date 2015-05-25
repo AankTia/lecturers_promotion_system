@@ -8,4 +8,8 @@ class ApplicationController < ActionController::Base
     add_breadcrumb "Home", :root_path
   end
 
+  def decorate(object)
+    object.decorate
+  end
+
 end

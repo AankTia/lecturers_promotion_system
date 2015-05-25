@@ -4,7 +4,7 @@ class PercentageAssessmentsController < ApplicationController
   def index
     @paginate_object = PercentageAssessment.order(updated_at: :desc).page(params[:page]).per(10)
     @index_data = []
-    decorated_objects = @paginate_object.decorate
+    decorated_objects = decorate @paginate_object
     decorated_objects.each {|o| @index_data << o.index_data}
     set_breadcrumb_for_index
   end
@@ -25,17 +25,17 @@ class PercentageAssessmentsController < ApplicationController
   end
 
   def show
-    @object = PercentageAssessment.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_show(@object)
   end
 
   def edit
-    @object = PercentageAssessment.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_edit(@object)
   end
 
   def update
-    @object = PercentageAssessment.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_edit(@object)
     if @object.update(percentage_assessment_params)
       redirect_to @object
@@ -45,7 +45,7 @@ class PercentageAssessmentsController < ApplicationController
   end
 
   def destroy
-    @object = PercentageAssessment.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     if @object.destroy
       redirect_to @object
     else
@@ -55,8 +55,17 @@ class PercentageAssessmentsController < ApplicationController
 
 private
 
+  def find_by_and_decorate(id)
+    decorate PercentageAssessment.find(id)
+  end
+
   def percentage_assessment_params
-    params.require(:percentage_assessment).permit(:name, :description, :value)
+    params.require(:percentage_assessment)
+          .permit(
+            :name,
+            :description,
+            :value
+          )
   end
 
   def set_page_title

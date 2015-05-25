@@ -4,7 +4,7 @@ class ListOfRatingsExecutionOfWorksController < ApplicationController
   def index
     @paginate_object = ListOfRatingsExecutionOfWork.order(updated_at: :desc).page(params[:page]).per(10)
     @index_data = []
-    decorated_objects = @paginate_object.decorate
+    decorated_objects = decorate @paginate_object
     decorated_objects.each {|o| @index_data << o.index_data}
     set_breadcrumb_for_index
   end
@@ -25,18 +25,18 @@ class ListOfRatingsExecutionOfWorksController < ApplicationController
   end
 
   def show
-    @object = ListOfRatingsExecutionOfWork.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_show(@object)
   end
 
   def edit
-    @object = ListOfRatingsExecutionOfWork.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_edit(@object)
     redirect_to @object, flash: {alert: "Tidak bisa memperbaharui DP3."} unless @object.draft?
   end
 
   def update
-    @object = ListOfRatingsExecutionOfWork.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_edit(@object)
     if @object.draft? && @object.update(list_of_ratings_execution_of_work_params)
       redirect_to @object
@@ -46,7 +46,7 @@ class ListOfRatingsExecutionOfWorksController < ApplicationController
   end
 
   def destroy
-    @object = ListOfRatingsExecutionOfWork.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     if @object.draft? && @object.destroy
       redirect_to @object
     else
@@ -55,7 +55,7 @@ class ListOfRatingsExecutionOfWorksController < ApplicationController
   end
 
   def export_pdf
-    @object = ListOfRatingsExecutionOfWork.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     if @object.completed?
       pdf = Pdf::ListOfRatingsExecutionOfWorkPdf.new(object: @object)
       send_data pdf.render, filename: "DP3 (#{@object.code})",
@@ -67,7 +67,7 @@ class ListOfRatingsExecutionOfWorksController < ApplicationController
   end
 
   def confirm
-    @object = ListOfRatingsExecutionOfWork.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     if @object.can_confirm?
       @object.confirm!
       redirect_to @object, flash: {notice: "Confirm DP3 Success"}
@@ -77,7 +77,7 @@ class ListOfRatingsExecutionOfWorksController < ApplicationController
   end
 
   def revise
-    @object = ListOfRatingsExecutionOfWork.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     if @object.can_revise?
       @object.revise!
       redirect_to @object, flash: {notice: "Revise DP3 Success"}
@@ -87,7 +87,7 @@ class ListOfRatingsExecutionOfWorksController < ApplicationController
   end
 
   def cancel
-    @object = ListOfRatingsExecutionOfWork.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     if @object.can_cancel?
       @object.cancel!
       redirect_to @object, flash: {notice: "DP3 berhasil di di batalkan"}
@@ -97,7 +97,7 @@ class ListOfRatingsExecutionOfWorksController < ApplicationController
   end
 
   def complete
-    @object = ListOfRatingsExecutionOfWork.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     if @object.can_complete?
       @object.complete!
       redirect_to @object, flash: {notice: "DP3 Complete"}
@@ -108,16 +108,22 @@ class ListOfRatingsExecutionOfWorksController < ApplicationController
 
 private
 
+  def find_by_and_decorate(id)
+    decorate ListOfRatingsExecutionOfWork.find(id)
+  end
+
   def list_of_ratings_execution_of_work_params
     params.require(:list_of_ratings_execution_of_work)
-          .permit(:assessor_id,
-                  :assessment_result_id,
-                  :objection,
-                  :objection_date,
-                  :response,
-                  :response_date,
-                  :decision,
-                  :decision_date)
+          .permit(
+            :assessor_id,
+            :assessment_result_id,
+            :objection,
+            :objection_date,
+            :response,
+            :response_date,
+            :decision,
+            :decision_date
+          )
   end
 
   def set_page_title

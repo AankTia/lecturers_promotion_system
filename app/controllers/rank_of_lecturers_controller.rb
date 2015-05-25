@@ -4,7 +4,7 @@ class RankOfLecturersController < ApplicationController
   def index
     @paginate_object = RankOfLecturer.order(updated_at: :desc).page(params[:page]).per(10)
     @index_data = []
-    decorated_objects = @paginate_object.decorate
+    decorated_objects = decorate @paginate_object
     decorated_objects.each {|o| @index_data << o.index_data}
     set_breadcrumb_for_index
   end
@@ -25,17 +25,17 @@ class RankOfLecturersController < ApplicationController
   end
 
   def show
-    @object = RankOfLecturer.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_show(@object)
   end
 
   def edit
-    @object = RankOfLecturer.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_edit(@object)
   end
 
   def update
-    @object = RankOfLecturer.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_edit(@object)
     if @object.update(rank_of_lecturer_params)
       redirect_to @object
@@ -45,7 +45,7 @@ class RankOfLecturersController < ApplicationController
   end
 
   def destroy
-    @object = RankOfLecturer.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     if @object.destroy
       redirect_to @object
     else
@@ -55,8 +55,17 @@ class RankOfLecturersController < ApplicationController
 
 private
 
+  def find_by_and_decorate(id)
+    decorate RankOfLecturer.find(id)
+  end
+
   def rank_of_lecturer_params
-    params.require(:rank_of_lecturer).permit(:name, :description, :symbol)
+    params.require(:rank_of_lecturer)
+          .permit(
+            :name,
+            :description,
+            :symbol
+          )
   end
 
   def set_page_title

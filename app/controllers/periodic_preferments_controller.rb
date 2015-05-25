@@ -4,7 +4,7 @@ class PeriodicPrefermentsController < ApplicationController
   def index
     @paginate_object = PeriodicPreferment.order(updated_at: :desc).page(params[:page]).per(10)
     @index_data = []
-    decorated_objects = @paginate_object.decorate
+    decorated_objects = decorate @paginate_object
     decorated_objects.each {|o| @index_data << o.index_data}
     set_breadcrumb_for_index
   end
@@ -25,18 +25,18 @@ class PeriodicPrefermentsController < ApplicationController
   end
 
   def show
-    @object = PeriodicPreferment.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_show(@object)
   end
 
   def edit
-    @object = PeriodicPreferment.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_edit(@object)
     redirect_to @object, flash: {alert: "Tidak bisa memperbaharui Kenaikan Pangkat Berkala"} unless @object.draft?
   end
 
   def update
-    @object = PeriodicPreferment.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_edit(@object)
     if @object.draft? && @object.update(periodic_preferment_params)
       redirect_to @object
@@ -46,7 +46,7 @@ class PeriodicPrefermentsController < ApplicationController
   end
 
   def destroy
-    @object = PeriodicPreferment.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     if @object.draft? && @object.destroy
       redirect_to @object
     else
@@ -55,7 +55,7 @@ class PeriodicPrefermentsController < ApplicationController
   end
 
   def export_pdf
-    @object = PeriodicPreferment.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     if @object.completed?
       pdf = Pdf::PeriodicPrefermentPdf.new(object: @object)
       send_data pdf.render, filename: "Surat Kenaikan Pangkat Berkala",
@@ -67,7 +67,7 @@ class PeriodicPrefermentsController < ApplicationController
   end
 
   def confirm
-    @object = PeriodicPreferment.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     if @object.can_confirm?
       @object.confirm!
       redirect_to @object, flash: {notice: "Confirm Kenaikan Pangkat Berkala Success"}
@@ -77,7 +77,7 @@ class PeriodicPrefermentsController < ApplicationController
   end
 
   def revise
-    @object = PeriodicPreferment.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     if @object.can_revise?
       @object.revise!
       redirect_to @object, flash: {notice: "Revise Kenaikan Pangkat Berkala Success"}
@@ -87,7 +87,7 @@ class PeriodicPrefermentsController < ApplicationController
   end
 
   def cancel
-    @object = PeriodicPreferment.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     if @object.can_cancel?
       @object.cancel!
       redirect_to @object, flash: {notice: "Kenaikan Pangkat Berkala berhasil di di batalkan"}
@@ -97,7 +97,7 @@ class PeriodicPrefermentsController < ApplicationController
   end
 
   def complete
-    @object = PeriodicPreferment.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     if @object.can_complete?
       @object.complete!
       redirect_to @object, flash: {notice: "Kenaikan Pangkat Berkala Complete"}
@@ -108,11 +108,17 @@ class PeriodicPrefermentsController < ApplicationController
 
 private
 
+  def find_by_and_decorate(id)
+    decorate PeriodicPreferment.find(id)
+  end
+
   def periodic_preferment_params
     params.require(:periodic_preferment)
-          .permit(:preferment_id,
-                  :periodic_preferment_date,
-                  :periodic_preferment_number)
+          .permit(
+            :preferment_id,
+            :periodic_preferment_date,
+            :periodic_preferment_number
+          )
   end
 
   def set_page_title

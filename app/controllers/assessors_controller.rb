@@ -4,7 +4,7 @@ class AssessorsController < ApplicationController
   def index
     @paginate_object = Assessor.order(updated_at: :desc).page(params[:page]).per(10)
     @index_data = []
-    decorated_objects = @paginate_object.decorate
+    decorated_objects = decorate @paginate_object
     decorated_objects.each {|o| @index_data << o.index_data}
     set_breadcrumb_for_index
   end
@@ -25,18 +25,18 @@ class AssessorsController < ApplicationController
   end
 
   def show
-    @object = Assessor.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_show(@object)
   end
 
   def edit
-    @object = Assessor.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_edit(@object)
     redirect_to @object, flash: {alert: "Tidak bisa memperbaharui Penilai dalam status #{@object.state}"} unless @object.inactive?
   end
 
   def update
-    @object = Assessor.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_edit(@object)
     if @object.inactive? && @object.update(assessor_params)
       redirect_to @object
@@ -46,7 +46,7 @@ class AssessorsController < ApplicationController
   end
 
   def destroy
-    @object = Assessor.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     if @object.inactive? && @object.destroy
       redirect_to @object
     else
@@ -55,7 +55,7 @@ class AssessorsController < ApplicationController
   end
 
   def activate
-    @object = Assessor.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     if @object.can_activate?
       @object.activate!
       redirect_to @object, flash: {notice: "Berhasil mengaktifkan Penilai."}
@@ -65,7 +65,7 @@ class AssessorsController < ApplicationController
   end
 
   def deactivate
-    @object = Assessor.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     if @object.can_deactivate?
       @object.deactivate!
       redirect_to @object, flash: {notice: "Berhasil menonaktifkan Penilai."}
@@ -76,23 +76,30 @@ class AssessorsController < ApplicationController
 
 private
 
+  def find_by_and_decorate(id)
+    decorate Assessor.find(id)
+  end
+
   def assessor_params
-    params.require(:assessor).permit(:registration_number_of_employees,
-                                     :study_program_id,
-                                     :rank_of_lecturer_id,
-                                     :name,
-                                     :place_of_birth,
-                                     :date_of_birth,
-                                     :gender,
-                                     :marital_status,
-                                     :address_line_1,
-                                     :address_line_2,
-                                     :address_line_3,
-                                     :address_line_4,
-                                     :position,
-                                     :education,
-                                     :date_of_addmission,
-                                     :contact_number)
+    params.require(:assessor)
+          .permit(
+            :registration_number_of_employees,
+            :study_program_id,
+            :rank_of_lecturer_id,
+            :name,
+            :place_of_birth,
+            :date_of_birth,
+            :gender,
+            :marital_status,
+            :address_line_1,
+            :address_line_2,
+            :address_line_3,
+            :address_line_4,
+            :position,
+            :education,
+            :date_of_addmission,
+            :contact_number
+          )
   end
 
   def set_page_title

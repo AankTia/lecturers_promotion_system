@@ -4,7 +4,7 @@ class StudyProgramsController < ApplicationController
   def index
     @paginate_object = StudyProgram.order(updated_at: :desc).page(params[:page]).per(10)
     @index_data = []
-    decorated_objects = @paginate_object.decorate
+    decorated_objects = decorate @paginate_object
     decorated_objects.each {|o| @index_data << o.index_data}
     set_breadcrumb_for_index
   end
@@ -25,17 +25,17 @@ class StudyProgramsController < ApplicationController
   end
 
   def show
-    @object = StudyProgram.find(params[:id]).decorate
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_show(@object)
   end
 
   def edit
-    @object = StudyProgram.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_edit(@object)
   end
 
   def update
-    @object = StudyProgram.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_edit(@object)
     if @object.update(study_program_params)
       redirect_to @object
@@ -45,7 +45,7 @@ class StudyProgramsController < ApplicationController
   end
 
   def destroy
-    @object = StudyProgram.find(params[:id])
+    @object = find_by_and_decorate(params[:id])
     if @object.destroy
       redirect_to @object
     else
@@ -55,8 +55,18 @@ class StudyProgramsController < ApplicationController
 
 private
 
+  def find_by_and_decorate(id)
+    decorate StudyProgram.find(id)
+  end
+
   def study_program_params
-    params.require(:study_program).permit(:faculty_id, :code, :name, :description)
+    params.require(:study_program)
+          .permit(
+            :faculty_id,
+            :code,
+            :name,
+            :description
+          )
   end
 
   def set_page_title
