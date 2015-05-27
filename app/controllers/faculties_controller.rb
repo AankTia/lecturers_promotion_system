@@ -16,6 +16,7 @@ class FacultiesController < ApplicationController
 
   def create
     @object = Faculty.new(faculty_params)
+    set_breadcrum_for_new
     if @object.save
       redirect_to @object
     else
