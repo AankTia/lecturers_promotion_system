@@ -17,7 +17,7 @@ class PrefermentsController < ApplicationController
   def create
     @object = Preferment.new(preferment_params)
     set_breadcrum_for_new
-    action = Preferment::Save.new(preferement: @object)
+    action = Preferment::Save.new(preferment: @object)
     if action.run
       redirect_to @object
     else
