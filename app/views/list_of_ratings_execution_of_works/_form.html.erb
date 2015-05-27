@@ -2,36 +2,70 @@
   <%= render "layouts/form_error_messages", object: object %>
 
   <div class="box-body">
-    <div class="form-group">
-      <label>Atasan Penilai</label>
-      <%= f.collection_select(:assessor_id, Assessor.all, :id, :name, {include_blank: true}, {class: "form-control"}) %>
+    <div class="form-group <%= error_class(object, :assessor_id)%>">
+      <label>
+        Atasan Penilai
+        <%= error_messages(object, :assessor_id) %>
+      </label>
+      <%= f.collection_select(
+            :assessor_id,
+            Assessor.all, :id, :name,
+            { include_blank: true },
+            {class: "form-control"}
+          ) %>
     </div>
-    <div class="form-group">
-      <label>Penilaian Dosen</label>
-      <%= f.collection_select(:assessment_result_id, AssessmentResult.all, :id, :code, {include_blank: true}, {class: "form-control"}) %>
+    <div class="form-group <%= error_class(object, :assessment_result_id)%>">
+      <label>
+        Penilaian Dosen
+        <%= error_messages(object, :assessment_result_id) %>
+      </label>
+      <%= f.collection_select(
+            :assessment_result_id,
+            AssessmentResult.all, :id, :code,
+            { include_blank: true },
+            {class: "form-control"}
+          ) %>
     </div>
-    <div class="form-group">
-      <label>Keberatan</label>
+    <div class="form-group <%= error_class(object, :objection)%>">
+      <label>
+        Keberatan
+        <%= error_messages(object, :objection) %>
+      </label>
       <%= f.text_area :objection, rows: 3, class: "form-control" %>
     </div>
-    <div class="form-group">
-      <label>Tanggal Keberatan</label>
+    <div class="form-group <%= error_class(object, :objection_date)%>">
+      <label>
+        Tanggal Keberatan
+        <%= error_messages(object, :objection_date) %>
+      </label>
       <%= f.date_field :objection_date, class: "form-control" %>
     </div>
-    <div class="form-group">
-      <label>Tanggapan</label>
+    <div class="form-group <%= error_class(object, :response)%>">
+      <label>
+        Tanggapan
+        <%= error_messages(object, :response) %>
+      </label>
       <%= f.text_area :response, rows: 3, class: "form-control" %>
     </div>
-    <div class="form-group">
-      <label>Tanggal Tanggapan</label>
+    <div class="form-group <%= error_class(object, :response_date)%>">
+      <label>
+        Tanggal Tanggapan
+        <%= error_messages(object, :response_date) %>
+      </label>
       <%= f.date_field :response_date, class: "form-control" %>
     </div>
-    <div class="form-group">
-      <label>Keputusan</label>
+    <div class="form-group <%= error_class(object, :decision)%>">
+      <label>
+        Keputusan
+        <%= error_messages(object, :decision) %>
+      </label>
       <%= f.text_area :decision, rows: 3, class: "form-control" %>
     </div>
-    <div class="form-group">
-      <label>Tanggal Keputusan</label>
+    <div class="form-group <%= error_class(object, :decision_date)%>">
+      <label>
+        Tanggal Keputusan
+        <%= error_messages(object, :decision_date) %>
+      </label>
       <%= f.date_field :decision_date, class: "form-control" %>
     </div>
   </div>

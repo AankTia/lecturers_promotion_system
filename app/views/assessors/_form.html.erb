@@ -2,59 +2,107 @@
   <%= render "layouts/form_error_messages", object: object %>
 
   <div class="box-body">
-    <div class="form-group">
-      <label>NIK</label>
+    <div class="form-group <%= error_class(object, :registration_number_of_employees)%>">
+      <label>
+        NIK
+        <%= error_messages(object, :registration_number_of_employees) %>
+      </label>
       <%= f.text_field :registration_number_of_employees, class: "form-control" %>
     </div>
-    <div class="form-group">
-      <label>Nama</label>
+    <div class="form-group <%= error_class(object, :name)%>">
+      <label>
+        Nama
+        <%= error_messages(object, :name) %>
+      </label>
       <%= f.text_field :name, class: "form-control" %>
     </div>
-    <div class="form-group">
-      <label>Tempat Lahir</label>
+    <div class="form-group <%= error_class(object, :place_of_birth)%>">
+      <label>
+        Tempat Lahir
+        <%= error_messages(object, :place_of_birth) %>
+      </label>
       <%= f.text_field :place_of_birth, class: "form-control" %>
     </div>
-    <div class="form-group">
-      <label>Tanggal Lahir</label>
+    <div class="form-group <%= error_class(object, :date_of_birth)%>">
+      <label>
+        Tanggal Lahir
+        <%= error_messages(object, :date_of_addmission) %>
+      </label>
       <%= f.date_field :date_of_birth, class: "form-control" %>
     </div>
-    <div class="form-group">
-      <label>Jenis Kelamin</label>
+    <div class="form-group <%= error_class(object, :gender)%>">
+      <label>
+        Jenis Kelamin
+        <%= error_messages(object, :gender) %>
+      </label>
       <%= f.text_field :gender, class: "form-control" %>
     </div>
-    <div class="form-group">
-      <label>Status</label>
+    <div class="form-group <%= error_class(object, :marital_status)%>">
+      <label>
+        Status
+        <%= error_messages(object, :marital_status) %>
+      </label>
       <%= f.text_field :marital_status, class: "form-control" %>
     </div>
-    <div class="form-group">
-      <label>Nomor Kontak</label>
+    <div class="form-group <%= error_class(object, :contact_number)%>">
+      <label>
+        Nomor Kontak
+        <%= error_messages(object, :contact_number) %>
+      </label>
       <%= f.text_field :contact_number, class: "form-control" %>
     </div>
-    <div class="form-group">
-      <label>Pendidikan</label>
+    <div class="form-group <%= error_class(object, :education)%>">
+      <label>
+        Pendidikan
+        <%= error_messages(object, :education) %>
+      </label>
       <%= f.text_field :education, class: "form-control" %>
     </div>
     <div class="form-group">
-      <label>Alamat</label>
+      <label>
+        Alamat
+      </label>
       <%= f.text_field :address_line1, class: "form-control" %><br />
       <%= f.text_field :address_line2, class: "form-control" %><br />
       <%= f.text_field :address_line3, class: "form-control" %><br />
       <%= f.text_field :address_line4, class: "form-control" %>
     </div>
-    <div class="form-group">
-      <label>Posisi</label>
+    <div class="form-group <%= error_class(object, :position)%>">
+      <label>
+        Posisi
+        <%= error_messages(object, :position) %>
+      </label>
       <%= f.text_field :position, class: "form-control" %>
     </div>
-    <div class="form-group">
-      <label>Program Studi</label>
-      <%= f.collection_select(:study_program_id, StudyProgram.all, :id, :name, {include_blank: true}, {class: "form-control"}) %>
+    <div class="form-group <%= error_class(object, :study_program_id)%>">
+      <label>
+        Program Studi
+        <%= error_messages(object, :study_program_id) %>
+      </label>
+      <%= f.collection_select(
+            :study_program_id,
+            StudyProgram.all, :id, :name,
+            { include_blank: true },
+            { class: "form-control" }
+          ) %>
     </div>
-    <div class="form-group">
-      <label>Pangkat</label>
-      <%= f.collection_select(:rank_of_lecturer_id, RankOfLecturer.all, :id, :name, {include_blank: true}, {class: "form-control"}) %>
+    <div class="form-group <%= error_class(object, :rank_of_lecturer_id)%>">
+      <label>
+        Pangkat
+        <%= error_messages(object, :rank_of_lecturer_id) %>
+      </label>
+      <%= f.collection_select(
+            :rank_of_lecturer_id,
+            RankOfLecturer.all, :id, :name,
+            { include_blank: true },
+            { class: "form-control" }
+          ) %>
     </div>
-    <div class="form-group">
-      <label>Date of Addmission</label>
+    <div class="form-group <%= error_class(object, :date_of_addmission)%>">
+      <label>
+        Date of Addmission
+        <%= error_messages(object, :date_of_addmission) %>
+      </label>
       <%= f.date_field :date_of_addmission, class: "form-control" %>
     </div>
   </div>

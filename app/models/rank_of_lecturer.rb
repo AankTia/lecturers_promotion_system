@@ -8,12 +8,14 @@ class RankOfLecturer < ActiveRecord::Base
     self.code = SecureRandom.uuid
   end
 
-  validates :code, presence: true,
-                   length:     { in: 1..255 },
-                   uniqueness: { case_sensitive: false }
-  validates :name, presence: true
-  validates :symbol, presence: true,
-                             uniqueness: { case_sensitive: false }
+  validates :code,          presence: true,
+                            length:     { in: 1..255 },
+                            uniqueness: { case_sensitive: false }
+  validates :name,          presence: true
+  validates :symbol,        presence: true,
+                            uniqueness: { case_sensitive: false }
+  validates :basic_salary,  presence: true,
+                            numericality: { greater_than: 0 }
 
 
 

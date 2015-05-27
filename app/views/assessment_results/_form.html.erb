@@ -2,20 +2,41 @@
   <%= render "layouts/form_error_messages", object: object %>
 
   <div class="box-body">
-    <div class="form-group">
-      <label>Dosen</label>
-      <%= f.collection_select(:lecturer_id, Lecturer.all, :id, :name, {include_blank: true}, {class: "form-control"}) %>
+    <div class="form-group <%= error_class(object, :lecturer_id)%>">
+      <label>
+        Dosen
+        <%= error_messages(object, :lecturer_id) %>
+      </label>
+      <%= f.collection_select(
+            :lecturer_id,
+            Lecturer.all, :id, :name,
+            { include_blank: true },
+            { class: "form-control" }
+          ) %>
     </div>
-    <div class="form-group">
-      <label>Penilai</label>
-      <%= f.collection_select(:assessor_id, Assessor.all, :id, :name, {include_blank: true}, {class: "form-control"}) %>
+    <div class="form-group <%= error_class(object, :assessor_id)%>">
+      <label>
+        Penilai
+        <%= error_messages(object, :assessor_id) %>
+      </label>
+      <%= f.collection_select(
+            :assessor_id,
+            Assessor.all, :id, :name,
+            { include_blank: true },
+            { class: "form-control" }) %>
     </div>
-    <div class="form-group">
-      <label>Tanggal Awal Penilaian</label>
+    <div class="form-group <%= error_class(object, :start_date)%>">
+      <label>
+        Tanggal Awal Penilaian
+        <%= error_messages(object, :start_date) %>
+      </label>
       <%= f.date_field :start_date, class: "form-control" %>
     </div>
-    <div class="form-group">
-      <label>Tanggal Akhir Penilaian</label>
+    <div class="form-group <%= error_class(object, :end_date)%>">
+      <label>
+        Tanggal Akhir Penilaian
+        <%= error_messages(object, :end_date) %>
+      </label>
       <%= f.date_field :end_date, class: "form-control" %>
     </div>
 
