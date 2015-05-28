@@ -1,17 +1,17 @@
 <aside class="left-side sidebar-offcanvas">
     <section class="sidebar">
       <ul class="sidebar-menu">
-        <li><%= link_to 'Home', root_path %></li>
-        <li><%= link_to 'Fakultas', faculties_path %></li>
-        <li><%= link_to 'Program Studi', study_programs_path %></li>
-        <li><%= link_to 'Pangkat / Golongan', rank_of_lecturers_path %></li>
-        <li><%= link_to 'Penilai', assessors_path %></li>
-        <li><%= link_to 'Dosen', lecturers_path %></li>
-        <li><%= link_to 'Bobot Penilain', percentage_assessments_path %></li>
-        <li><%= link_to 'Penilain', assessment_results_path %></li>
-        <li><%= link_to 'Daftar Penilaian Pelaksanaan Pekerjaan (DP3)', list_of_ratings_execution_of_works_path %></li>
-        <li><%= link_to 'Kenaikan Pangkat', preferments_path %></li>
-        <li><%= link_to 'Kenaikan Pangkat Berkala', periodic_preferments_path %></li>
+        <%= set_sidebar title: 'Home', url: root_path, controller: 'home' %>
+        <%= set_sidebar title: 'Fakultas', url: faculties_path %>
+        <%= set_sidebar title: 'Program Studi', url: study_programs_path %>
+        <%= set_sidebar title: 'Pangkat / Golongan', url: rank_of_lecturers_path %>
+        <%= set_sidebar title: 'Penilai', url: assessors_path %>
+        <%= set_sidebar title: 'Dosen', url: lecturers_path %>
+        <%= set_sidebar title: 'Bobot Penilain', url: percentage_assessments_path %>
+        <%= set_sidebar title: 'Penilain', url: assessment_results_path %>
+        <%= set_sidebar title: 'Daftar Penilaian Pelaksanaan Pekerjaan (DP3)', url: list_of_ratings_execution_of_works_path %>
+        <%= set_sidebar title: 'Kenaikan Pangkat', url: preferments_path %>
+        <%= set_sidebar title: 'Kenaikan Pangkat Berkala', url: periodic_preferments_path %>
         <li><%= link_to 'Log Out', destroy_user_session_path, method: 'delete' %></li>
       </ul>
     </section>
