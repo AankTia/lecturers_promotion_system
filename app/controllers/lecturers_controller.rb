@@ -1,4 +1,6 @@
 class LecturersController < ApplicationController
+  include ActiveInactiveStateTransitionCallback
+
   before_filter :authenticate_user!, :set_page_title
 
   def index
