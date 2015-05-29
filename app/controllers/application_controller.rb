@@ -12,4 +12,10 @@ class ApplicationController < ActionController::Base
     object.decorate
   end
 
+  def generate_index_data_for(object)
+    @index_data = []
+    decorated_objects = decorate object
+    decorated_objects.each {|o| @index_data << o.index_data}
+  end
+
 end

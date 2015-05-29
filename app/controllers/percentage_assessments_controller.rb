@@ -2,10 +2,8 @@ class PercentageAssessmentsController < ApplicationController
   before_filter :authenticate_user!, :set_page_title
 
   def index
-    @paginate_object = PercentageAssessment.order(updated_at: :desc).page(params[:page]).per(10)
-    @index_data = []
-    decorated_objects = decorate @paginate_object
-    decorated_objects.each {|o| @index_data << o.index_data}
+    @object = PercentageAssessment.order(updated_at: :desc).page(params[:page]).per(10)
+    generate_index_data_for @object
     set_breadcrumb_for_index
   end
 
@@ -17,11 +15,8 @@ class PercentageAssessmentsController < ApplicationController
   def create
     @object = PercentageAssessment.new(percentage_assessment_params)
     set_breadcrum_for_new
-    if @object.save
-      redirect_to @object
-    else
-      render 'new'
-    end
+
+    @object.save ? redirect_to(@object) : render('new')
   end
 
   def show
@@ -37,20 +32,14 @@ class PercentageAssessmentsController < ApplicationController
   def update
     @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_edit(@object)
-    if @object.update(percentage_assessment_params)
-      redirect_to @object
-    else
-      render 'edit'
-    end
+
+    @object.attributes = percentage_assessment_params
+    @object.save ? redirect_to(@object) : render('new')
   end
 
   def destroy
     @object = find_by_and_decorate(params[:id])
-    if @object.destroy
-      redirect_to @object
-    else
-      redirect_to faculties_path
-    end
+    @object.destroy ? redirect_to(@object) : redirect_to(faculties_path)
   end
 
 private

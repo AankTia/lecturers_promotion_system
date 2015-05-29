@@ -1,12 +1,17 @@
 class AssessmentResultsController < ApplicationController
+  include DefaultStateTransitionCallback
+
   before_filter :authenticate_user!, :set_page_title
 
   def index
-    @paginate_object = AssessmentResult.order(updated_at: :desc).page(params[:page]).per(10)
-    @index_data = []
-    decorated_objects = decorate @paginate_object
-    decorated_objects.each {|o| @index_data << o.index_data}
+    @object = AssessmentResult.order(updated_at: :desc).page(params[:page]).per(10)
+    generate_index_data_for @object
     set_breadcrumb_for_index
+  end
+
+  def show
+    @object = find_by_and_decorate(params[:id])
+    set_breadcrumb_for_show(@object)
   end
 
   def new
@@ -24,28 +29,21 @@ class AssessmentResultsController < ApplicationController
   def create
     @object = AssessmentResult.new(assessment_result_params)
     set_breadcrum_for_new
-    action = DocumentAction::AssessmentResult::Save.new(assessment_result: @object)
-    if action.run
-      redirect_to @object
-    else
-      render 'new'
-    end
-  end
 
-  def show
-    @object = find_by_and_decorate(params[:id])
-    set_breadcrumb_for_show(@object)
+    action = DocumentAction::AssessmentResult::Save.new(assessment_result: @object)
+    action.run ? redirect_to(@object) : render('new')
   end
 
   def edit
     @object = find_by_and_decorate(params[:id])
+    edit_callback_for @object
     set_breadcrumb_for_edit(@object)
-    redirect_to @object, flash: {alert: "Tidak bisa memperbaharui Penilaian"} unless @object.draft?
   end
 
   def update
     @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_edit(@object)
+
     @object.update(
       lecturer_id: assessment_result_params[:lecturer_id],
       assessor_id: assessment_result_params[:assessor_id]
@@ -59,60 +57,36 @@ class AssessmentResultsController < ApplicationController
     @object.update(weighting_value: assessment_result_calculator.weighting_value)
     @object.update(average_value: assessment_result_calculator.average_value)
 
-    if @object.draft? && @object.save
-      redirect_to @object
+    if @object.draft?
+      @object.save ? redirect_to(@object) : render('edit')
     else
-      render 'edit'
+      edit_callback_for @object
     end
   end
 
   def destroy
     @object = find_by_and_decorate(params[:id])
-    if @object.draft? && @object.destroy
-      redirect_to @object
-    else
-      redirect_to faculties_path
-    end
+    destroy_callback_for @object
   end
 
   def confirm
     @object = find_by_and_decorate(params[:id])
-    if @object.can_confirm?
-      @object.confirm!
-      redirect_to @object, flash: {notice: "Confirm Penilaian Success"}
-    else
-      redirect_to @object, flash: {alert: "Penilaian tidak bisa di Confirm"}
-    end
+    confirm_callback_for @object
   end
 
   def revise
     @object = find_by_and_decorate(params[:id])
-    if @object.can_revise?
-      @object.revise!
-      redirect_to @object, flash: {notice: "Revise Penilaian Success"}
-    else
-      redirect_to @object, flash: {alert: "Penilaian tidak bisa di Revise"}
-    end
+    revise_callback_for @object
   end
 
   def cancel
     @object = find_by_and_decorate(params[:id])
-    if @object.can_cancel?
-      @object.cancel!
-      redirect_to @object, flash: {notice: "Penilaian berhasil di di batalkan"}
-    else
-      redirect_to @object, flash: {alert: "Penilaian tidak bisa di batalkan"}
-    end
+    cancel_callback_for @object
   end
 
   def complete
     @object = find_by_and_decorate(params[:id])
-    if @object.can_complete?
-      @object.complete!
-      redirect_to @object, flash: {notice: "Penilaian Complete"}
-    else
-      redirect_to @object, flash: {alert: "Penilaian tidak bisa Complete"}
-    end
+    complete_callback_for @object
   end
 
 private

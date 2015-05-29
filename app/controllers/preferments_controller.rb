@@ -2,11 +2,14 @@ class PrefermentsController < ApplicationController
   before_filter :authenticate_user!, :set_page_title
 
   def index
-    @paginate_object = Preferment.order(updated_at: :desc).page(params[:page]).per(10)
-    @index_data = []
-    decorated_objects = decorate @paginate_object
-    decorated_objects.each {|o| @index_data << o.index_data}
+    @object = Preferment.order(updated_at: :desc).page(params[:page]).per(10)
+    generate_index_data_for @object
     set_breadcrumb_for_index
+  end
+
+  def show
+    @object = find_by_and_decorate(params[:id])
+    set_breadcrumb_for_show(@object)
   end
 
   def new
@@ -17,82 +20,46 @@ class PrefermentsController < ApplicationController
   def create
     @object = Preferment.new(preferment_params)
     set_breadcrum_for_new
-    action = Preferment::Save.new(preferment: @object)
-    if action.run
-      redirect_to @object
-    else
-      render 'new'
-    end
-  end
 
-  def show
-    @object = find_by_and_decorate(params[:id])
-    set_breadcrumb_for_show(@object)
+    action = Preferment::Save.new(preferment: @object)
+    action.run ? redirect_to(@object) : render('new')
   end
 
   def edit
     @object = find_by_and_decorate(params[:id])
-    set_breadcrumb_for_edit(@object)
-    redirect_to @object, flash: {alert: "Tidak bisa memperbaharui Kenaikan Pangkat."} unless @object.draft?
+    edit_callback_for @object
+    set_breadcrumb_for_edit @object
   end
 
   def update
     @object = find_by_and_decorate(params[:id])
-    set_breadcrumb_for_edit(@object)
-    if @object.draft? && @object.update(preferment_params)
-      redirect_to @object
-    else
-      render 'edit'
-    end
+    update_callback_for @object
+    set_breadcrumb_for_edit @object
   end
 
   def destroy
     @object = find_by_and_decorate(params[:id])
-    if @object.draft? && @object.destroy
-      redirect_to @object
-    else
-      redirect_to faculties_path
-    end
+    destroy_callback_for @object
   end
 
   def confirm
     @object = find_by_and_decorate(params[:id])
-    if @object.can_confirm?
-      @object.confirm!
-      redirect_to @object, flash: {notice: "Confirm Kenaikan Pangkat Success"}
-    else
-      redirect_to @object, flash: {alert: "Kenaikan Pangkat tidak bisa di Confirm"}
-    end
+    confirm_callback_for @object
   end
 
   def revise
     @object = find_by_and_decorate(params[:id])
-    if @object.can_revise?
-      @object.revise!
-      redirect_to @object, flash: {notice: "Revise Kenaikan Pangkat Success"}
-    else
-      redirect_to @object, flash: {alert: "Kenaikan Pangkat tidak bisa di Revise"}
-    end
+    revise_callback_for @object
   end
 
   def cancel
     @object = find_by_and_decorate(params[:id])
-    if @object.can_cancel?
-      @object.cancel!
-      redirect_to @object, flash: {notice: "Kenaikan Pangkat berhasil di di batalkan"}
-    else
-      redirect_to @object, flash: {alert: "Kenaikan Pangkat tidak bisa di batalkan"}
-    end
+    cancel_callback_for @object
   end
 
   def complete
     @object = find_by_and_decorate(params[:id])
-    if @object.can_complete?
-      @object.complete!
-      redirect_to @object, flash: {notice: "Kenaikan Pangkat Complete"}
-    else
-      redirect_to @object, flash: {alert: "Kenaikan Pangkat tidak bisa Complete"}
-    end
+    complete_callback_for @object
   end
 
 private

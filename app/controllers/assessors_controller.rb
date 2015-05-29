@@ -1,11 +1,11 @@
 class AssessorsController < ApplicationController
+  include ActiveInactiveStateTransitionCallback
+
   before_filter :authenticate_user!, :set_page_title
 
   def index
-    @paginate_object = Assessor.order(updated_at: :desc).page(params[:page]).per(10)
-    @index_data = []
-    decorated_objects = decorate @paginate_object
-    decorated_objects.each {|o| @index_data << o.index_data}
+    @object = Assessor.order(updated_at: :desc).page(params[:page]).per(10)
+    generate_index_data_for @object
     set_breadcrumb_for_index
   end
 
@@ -17,61 +17,40 @@ class AssessorsController < ApplicationController
   def create
     @object = Assessor.new(assessor_params)
     set_breadcrum_for_new
-    if @object.save
-      redirect_to @object
-    else
-      render 'new'
-    end
+
+    @object.save ? redirect_to(@object) : render('new')
   end
 
   def show
     @object = find_by_and_decorate(params[:id])
-    set_breadcrumb_for_show(@object)
+    set_breadcrumb_for_show @object
   end
 
   def edit
     @object = find_by_and_decorate(params[:id])
-    set_breadcrumb_for_edit(@object)
-    redirect_to @object, flash: {alert: "Tidak bisa memperbaharui Penilai dalam status #{@object.state}"} unless @object.inactive?
+    edit_callback_for @object
+    set_breadcrumb_for_edit @object
   end
 
   def update
     @object = find_by_and_decorate(params[:id])
-    set_breadcrumb_for_edit(@object)
-    if @object.inactive? && @object.update(assessor_params)
-      redirect_to @object
-    else
-      render 'edit'
-    end
+    update_callback_for @object
+    set_breadcrumb_for_edit @object
   end
 
   def destroy
     @object = find_by_and_decorate(params[:id])
-    if @object.inactive? && @object.destroy
-      redirect_to @object
-    else
-      redirect_to assessors_path
-    end
+    destroy_callback_for @object
   end
 
   def activate
     @object = find_by_and_decorate(params[:id])
-    if @object.can_activate?
-      @object.activate!
-      redirect_to @object, flash: {notice: "Berhasil mengaktifkan Penilai."}
-    else
-      redirect_to @object, flash: {alert: "Gagal mengaktifkan Penilai."}
-    end
+    activate_callback_for @object
   end
 
   def deactivate
     @object = find_by_and_decorate(params[:id])
-    if @object.can_deactivate?
-      @object.deactivate!
-      redirect_to @object, flash: {notice: "Berhasil menonaktifkan Penilai."}
-    else
-      redirect_to @object, flash: {alert: "Gagal menonaktifkan Penilai."}
-    end
+    deactivate_callback_for @object
   end
 
 private
@@ -91,10 +70,10 @@ private
             :date_of_birth,
             :gender,
             :marital_status,
-            :address_line_1,
-            :address_line_2,
-            :address_line_3,
-            :address_line_4,
+            :address_line1,
+            :address_line2,
+            :address_line3,
+            :address_line4,
             :position,
             :education,
             :date_of_addmission,
