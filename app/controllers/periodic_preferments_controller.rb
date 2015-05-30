@@ -1,4 +1,6 @@
 class PeriodicPrefermentsController < ApplicationController
+  include DefaultStateTransitionCallback
+
   before_filter :authenticate_user!, :set_page_title
 
   def index
@@ -32,7 +34,7 @@ class PeriodicPrefermentsController < ApplicationController
 
   def update
     @object = find_by_and_decorate(params[:id])
-    update_callback_for @object
+    update_callback_for @object, periodic_preferment_params
     set_breadcrumb_for_edit @object
   end
 

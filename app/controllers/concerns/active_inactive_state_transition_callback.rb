@@ -4,9 +4,9 @@ module ActiveInactiveStateTransitionCallback
     redirect_to object, flash: {alert: "Tidak bisa memperbaharui dalam status #{object.state}"} unless object.inactive?
   end
 
-  def update_callback_for(object)
+  def update_callback_for(object, params)
     if object.inactive?
-      object.attributes = assessor_params
+      object.attributes = params
       object.save ? redirect_to(object) : render('edit')
     else
       redirect_to object, flash: {alert: "Tidak bisa memperbaharui dalam status #{object.state}"}

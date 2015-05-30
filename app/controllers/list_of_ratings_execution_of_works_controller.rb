@@ -34,7 +34,7 @@ class ListOfRatingsExecutionOfWorksController < ApplicationController
 
   def update
     @object = find_by_and_decorate(params[:id])
-    update_callback_for @object
+    update_callback_for @object, list_of_ratings_execution_of_work_params
     set_breadcrumb_for_edit @object
   end
 

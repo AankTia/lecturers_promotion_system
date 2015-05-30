@@ -4,9 +4,9 @@ module DefaultStateTransitionCallback
     redirect_to object, flash: {alert: "Tidak bisa memperbaharui dalam status #{object.state}"} unless object.draft?
   end
 
-  def update_callback_for(object)
+  def update_callback_for(object, params)
     if object.draft?
-      object.attributes = list_of_ratings_execution_of_work_params
+      object.attributes = params
       object.save ? redirect_to(@object) : render('new')
     else
       redirect_to object, flash: {alert: "Tidak bisa memperbaharui dalam status #{object.state}"}

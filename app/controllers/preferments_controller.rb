@@ -1,4 +1,6 @@
 class PrefermentsController < ApplicationController
+  include DefaultStateTransitionCallback
+
   before_filter :authenticate_user!, :set_page_title
 
   def index
@@ -21,7 +23,7 @@ class PrefermentsController < ApplicationController
     @object = Preferment.new(preferment_params)
     set_breadcrum_for_new
 
-    action = Preferment::Save.new(preferment: @object)
+    action = Preferment::Action::Save.new(preferment: @object)
     action.run ? redirect_to(@object) : render('new')
   end
 
@@ -33,7 +35,7 @@ class PrefermentsController < ApplicationController
 
   def update
     @object = find_by_and_decorate(params[:id])
-    update_callback_for @object
+    update_callback_for @object, preferment_params
     set_breadcrumb_for_edit @object
   end
 
