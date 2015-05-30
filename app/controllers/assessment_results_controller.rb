@@ -15,14 +15,8 @@ class AssessmentResultsController < ApplicationController
   end
 
   def new
-    assessment_result = AssessmentResult.new
-    PercentageAssessment.all.each do |percentage_assessment|
-      assessment_result.assessment_result_lines.build(
-        percentage_assessment_id: percentage_assessment.id,
-        value: 0
-      )
-    end
-    @object = assessment_result
+    action = AssessmentResult::Action::New.new
+    @object = decorate action.assessment_result
     set_breadcrum_for_new
   end
 
@@ -30,7 +24,7 @@ class AssessmentResultsController < ApplicationController
     @object = AssessmentResult.new(assessment_result_params)
     set_breadcrum_for_new
 
-    action = DocumentAction::AssessmentResult::Save.new(assessment_result: @object)
+    action = AssessmentResult::Action::Save.new(assessment_result: @object)
     action.run ? redirect_to(@object) : render('new')
   end
 
@@ -44,24 +38,8 @@ class AssessmentResultsController < ApplicationController
     @object = find_by_and_decorate(params[:id])
     set_breadcrumb_for_edit(@object)
 
-    @object.update(
-      lecturer_id: assessment_result_params[:lecturer_id],
-      assessor_id: assessment_result_params[:assessor_id]
-    )
-    assessment_result_params[:assessment_result_lines_attributes].each do |key, values|
-      line = @object.assessment_result_lines.find_by_and_decorate(percentage_assessment_id: values[:percentage_assessment_id].to_i)
-      line.update(value: BigDecimal.new(values[:value]))
-    end
-
-    assessment_result_calculator = AssessmentResultCalculator.new(assessment_result: @object)
-    @object.update(weighting_value: assessment_result_calculator.weighting_value)
-    @object.update(average_value: assessment_result_calculator.average_value)
-
-    if @object.draft?
-      @object.save ? redirect_to(@object) : render('edit')
-    else
-      edit_callback_for @object
-    end
+    action = AssessmentResult::Action::Update.new(assessment_result: @object, params: assessment_result_params)
+    action.run ? redirect_to(@object) : render('edit')
   end
 
   def destroy

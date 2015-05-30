@@ -34,7 +34,7 @@ MARITAL_STATUS = ['Lajang', 'Menikah', 'Bercerai']
     {code: 'FHUT', name: 'Fakultas Kehutanan'},
     {code: 'FH', name: 'Fakultas Hukum'}
   ].each do |faculty|
-    Faculty.new(code: faculty[:code], name: faculty[:name]).save
+    Faculty.new(code: faculty[:code], name: faculty[:name]).save!
   end
 
 # Study Program seeds
@@ -54,30 +54,11 @@ MARITAL_STATUS = ['Lajang', 'Menikah', 'Bercerai']
     {code: 'FKOM-MI-D3', name: 'Manajemen Informatika (D3)', faculty_code: 'FKOM'},
     {code: 'FH-IH-S1', name: 'Ilmu Hukum', faculty_code: 'FH'},
   ].each do |study_program|
-    sp = StudyProgram.new(
-                      code: study_program[:code],
-                      name: study_program[:name],
-                      faculty_id: Faculty.find_by(code: study_program[:faculty_code]).id
-                    )
-    sp.save
-  end
-
-# PercentageAssessment seeds
-  puts "Seed Percentage Assessment..."
-  [ {name: "Kesetiaan", value: BigDecimal.new('10.0')},
-    {name: "Prestasi Kerja", value: BigDecimal.new('20.0')},
-    {name: "Tanggung Jawab", value: BigDecimal.new('20.0')},
-    {name: "Ketaatan ", value: BigDecimal.new('10.0')},
-    {name: "Kejujuran", value: BigDecimal.new('10.0')},
-    {name: "Kerjasama", value: BigDecimal.new('15.0')},
-    {name: "Prakarsa", value: BigDecimal.new('5.0')},
-    {name: "Kepemimpinan", value: BigDecimal.new('10')}
-  ].each do |percentage_assesment|
-    pa =  PercentageAssessment.new(
-            name: percentage_assesment[:name],
-            value: percentage_assesment[:value]
-         )
-    pa.save
+    StudyProgram.new(
+      code: study_program[:code],
+      name: study_program[:name],
+      faculty_id: Faculty.find_by(code: study_program[:faculty_code]).id
+    ).save!
   end
 
 # RankOfLecturer seeds
@@ -100,12 +81,28 @@ MARITAL_STATUS = ['Lajang', 'Menikah', 'Bercerai']
     {name: 'Pembina Utama Madya', symbol: 'IV/d'},
     {name: 'Pembina Utama ', symbol: 'IV/e'}
   ].each do |rank_of_lecuterer|
-    rof = RankOfLecturer.new(
+    RankOfLecturer.new(
       name: rank_of_lecuterer[:name],
       symbol: rank_of_lecuterer[:symbol],
       basic_salary: rand(500_000..10_000_000)
-    )
-    rof.save!
+    ).save!
+  end
+
+# PercentageAssessment seeds
+  puts "Seed Percentage Assessment..."
+  [ {name: "Kesetiaan", value: BigDecimal.new('10.0')},
+    {name: "Prestasi Kerja", value: BigDecimal.new('20.0')},
+    {name: "Tanggung Jawab", value: BigDecimal.new('20.0')},
+    {name: "Ketaatan ", value: BigDecimal.new('10.0')},
+    {name: "Kejujuran", value: BigDecimal.new('10.0')},
+    {name: "Kerjasama", value: BigDecimal.new('15.0')},
+    {name: "Prakarsa", value: BigDecimal.new('5.0')},
+    {name: "Kepemimpinan", value: BigDecimal.new('10')}
+  ].each do |percentage_assesment|
+    PercentageAssessment.new(
+      name: percentage_assesment[:name],
+      value: percentage_assesment[:value]
+    ).save!
   end
 
 # Lecturer seeds
@@ -164,14 +161,13 @@ MARITAL_STATUS = ['Lajang', 'Menikah', 'Bercerai']
         )
       end
 
-      DocumentAction::AssessmentResult::Save.new(assessment_result: assessment_result).run
+      AssessmentResult::Action::Save.new(assessment_result: assessment_result).run
     end
   end
 
 # List Of Ratings Execution Of Work
   puts "Seed List Of Ratings Execution Of Work..."
   AssessmentResult.all.each do |assessment_result|
-    # list_of_ratings_execution_of_work
     ListOfRatingsExecutionOfWork.new(
       assessment_result_id: assessment_result.id,
       assessor_id: Assessor.pluck(:id).sample
@@ -189,7 +185,7 @@ MARITAL_STATUS = ['Lajang', 'Menikah', 'Bercerai']
       submissions_preferment_date: Time.now,
       preferment_date: Time.now + 1.week
     )
-    Preferment::Save.new(preferment: preferment).run
+    Preferment::Action::Save.new(preferment: preferment).run
   end
 
 # Periodic Preferment

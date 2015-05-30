@@ -46,7 +46,7 @@ class ListOfRatingsExecutionOfWorksController < ApplicationController
   def export_pdf
     @object = find_by_and_decorate(params[:id])
     if @object.completed?
-      pdf = Pdf::ListOfRatingsExecutionOfWorkPdf.new(object: @object)
+      pdf = ListOfRatingsExecutionOfWork::Pdf.new(object: @object)
       send_data pdf.render, filename: "DP3 (#{@object.code})",
                             type: "application/pdf",
                             disposition: "inline"

@@ -1,10 +1,15 @@
-class DocumentAction::AssessmentResult::Save < DocumentAction::Base
+class AssessmentResult::Action::Save < ResourceAction::Base
   attr_accessor :assessment_result
 
   def process_run
     ActiveRecord::Base.transaction do
       retain_attribute
-      assessment_result.save
+      if assessment_result.valid?
+        assessment_result.save!
+        assessment_result
+      else
+        raise_invalid_action!(full_messages_from(assessment_result))
+      end
     end
   end
 

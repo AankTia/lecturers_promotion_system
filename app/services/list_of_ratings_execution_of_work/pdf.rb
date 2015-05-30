@@ -1,5 +1,5 @@
 require "prawn/table"
-class Pdf::ListOfRatingsExecutionOfWorkPdf < Prawn::Document
+class ListOfRatingsExecutionOfWork::Pdf < Prawn::Document
   attr_reader :object
 
   def initialize(object:)

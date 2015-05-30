@@ -46,7 +46,7 @@ class PeriodicPrefermentsController < ApplicationController
   def export_pdf
     @object = find_by_and_decorate(params[:id])
     if @object.completed?
-      pdf = Pdf::PeriodicPrefermentPdf.new(object: @object)
+      pdf = PeriodicPreferment::Pdf.new(object: @object)
       send_data pdf.render, filename: "Surat Kenaikan Pangkat Berkala",
                             type: "application/pdf",
                             disposition: "inline"

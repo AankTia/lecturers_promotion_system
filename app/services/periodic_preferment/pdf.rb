@@ -1,5 +1,5 @@
 require "prawn/table"
-class Pdf::PeriodicPrefermentPdf < Prawn::Document
+class PeriodicPreferment::Pdf < Prawn::Document
   attr_reader :object
 
   def initialize(object:)

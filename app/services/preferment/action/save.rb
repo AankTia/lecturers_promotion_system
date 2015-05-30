@@ -1,10 +1,15 @@
-class Preferment::Save < DocumentAction::Base
+class Preferment::Action::Save < ResourceAction::Base
   attr_accessor :preferment
 
   def process_run
     ActiveRecord::Base.transaction do
       retain_attribute
-      preferment.save
+      if preferment.valid?
+        preferment.save!
+        preferment
+      else
+        raise_invalid_action!(full_messages_from(preferment))
+      end
     end
   end
 
@@ -19,5 +24,4 @@ private
     assessment_result = list_of_ratings_execution_of_work.try(:assessment_result)
     assessment_result.try(:lecturer_id)
   end
-
 end
