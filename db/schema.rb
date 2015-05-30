@@ -158,9 +158,10 @@ ActiveRecord::Schema.define(version: 20150501123030) do
   end
 
   create_table "study_programs", force: true do |t|
-    t.integer  "faculty_id",  null: false
-    t.string   "code",        null: false
-    t.string   "name",        null: false
+    t.integer  "faculty_id",      null: false
+    t.string   "code",            null: false
+    t.string   "name",            null: false
+    t.string   "education_level", null: false
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"

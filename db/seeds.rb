@@ -39,25 +39,26 @@ MARITAL_STATUS = ['Lajang', 'Menikah', 'Bercerai']
 
 # Study Program seeds
   puts "Seed Study Program..."
-  [ {code: 'FKIP-PBSI-S1', name: 'Pendidikan Bahasa dan Sastra Indonesia ', faculty_code: 'FKIP'},
-    {code: 'FKIP-PB-S1', name: 'Pendidikan Biologi', faculty_code: 'FKIP'},
-    {code: 'FKIP-PE-S1', name: 'Pendidikan Ekonomi', faculty_code: 'FKIP'},
-    {code: 'FKIP-PBI-S1', name: 'Pendidikan Bahasa Inggris', faculty_code: 'FKIP'},
-    {code: 'FKIP-PGDS-S1', name: 'Pendidikan Guru Sekolah Dasar', faculty_code: 'FKIP'},
-    {code: 'FKIP-PM-S1', name: 'Pendidikan Matematika', faculty_code: 'FKIP'},
-    {code: 'FE-M-S1', name: 'Manajemen', faculty_code: 'FE'},
-    {code: 'FE-A-S1', name: 'Akuntansi', faculty_code: 'FE'},
-    {code: 'FHUT-IK-S1', name: 'Ilmu Kehutanan', faculty_code: 'FHUT'},
-    {code: 'FKOM-TI-S1', name: 'Teknik Informatika', faculty_code: 'FKOM'},
-    {code: 'FKOM-SI-S1', name: 'Sistem Informasi', faculty_code: 'FKOM'},
-    {code: 'FKOM-TI-D3', name: 'Teknik Informatika (D3)', faculty_code: 'FKOM'},
-    {code: 'FKOM-MI-D3', name: 'Manajemen Informatika (D3)', faculty_code: 'FKOM'},
-    {code: 'FH-IH-S1', name: 'Ilmu Hukum', faculty_code: 'FH'},
+  [ {code: 'FKIP-PBSI-S1', name: 'Pendidikan Bahasa dan Sastra Indonesia ', faculty_code: 'FKIP', level: 'Sarjana'},
+    {code: 'FKIP-PB-S1', name: 'Pendidikan Biologi', faculty_code: 'FKIP', level: 'Sarjana'},
+    {code: 'FKIP-PE-S1', name: 'Pendidikan Ekonomi', faculty_code: 'FKIP', level: 'Sarjana'},
+    {code: 'FKIP-PBI-S1', name: 'Pendidikan Bahasa Inggris', faculty_code: 'FKIP', level: 'Sarjana'},
+    {code: 'FKIP-PGDS-S1', name: 'Pendidikan Guru Sekolah Dasar', faculty_code: 'FKIP', level: 'Sarjana'},
+    {code: 'FKIP-PM-S1', name: 'Pendidikan Matematika', faculty_code: 'FKIP', level: 'Sarjana'},
+    {code: 'FE-M-S1', name: 'Manajemen', faculty_code: 'FE', level: 'Sarjana'},
+    {code: 'FE-A-S1', name: 'Akuntansi', faculty_code: 'FE', level: 'Sarjana'},
+    {code: 'FHUT-IK-S1', name: 'Ilmu Kehutanan', faculty_code: 'FHUT', level: 'Sarjana'},
+    {code: 'FKOM-TI-S1', name: 'Teknik Informatika', faculty_code: 'FKOM', level: 'Sarjana'},
+    {code: 'FKOM-SI-S1', name: 'Sistem Informasi', faculty_code: 'FKOM', level: 'Sarjana'},
+    {code: 'FKOM-TI-D3', name: 'Teknik Informatika (D3)', faculty_code: 'FKOM', level: 'Diploma'},
+    {code: 'FKOM-MI-D3', name: 'Manajemen Informatika (D3)', faculty_code: 'FKOM', level: 'Diploma'},
+    {code: 'FH-IH-S1', name: 'Ilmu Hukum', faculty_code: 'FH', level: 'Sarjana'},
   ].each do |study_program|
     StudyProgram.new(
       code: study_program[:code],
       name: study_program[:name],
-      faculty_id: Faculty.find_by(code: study_program[:faculty_code]).id
+      faculty_id: Faculty.find_by(code: study_program[:faculty_code]).id,
+      education_level: study_program[:level]
     ).save!
   end
 
@@ -177,7 +178,7 @@ MARITAL_STATUS = ['Lajang', 'Menikah', 'Bercerai']
   AssessmentResult.completed.each do |assessment_result|
     object = ListOfRatingsExecutionOfWork.new(
       assessment_result_id: assessment_result.id,
-      assessor_id: Assessor.active.pluck(:id).sample
+      assessor_id: (Assessor.active.pluck(:id) - [assessment_result.assessor_id]).sample
     )
     object.save!
     object.confirm!

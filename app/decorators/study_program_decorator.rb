@@ -15,6 +15,10 @@ class StudyProgramDecorator < ApplicationDecorator
         value: name
       },
       {
+        title: 'Jenjang',
+        value: education_level
+      },
+      {
         title: 'Fakultas',
         value: link_to_faculty
       },

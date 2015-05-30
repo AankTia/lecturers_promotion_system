@@ -4,6 +4,7 @@ class CreateStudyPrograms < ActiveRecord::Migration
       t.integer :faculty_id, null: false
       t.string :code, null: false
       t.string :name, null: false
+      t.string :education_level, null: false
       t.text   :description
 
       t.timestamps

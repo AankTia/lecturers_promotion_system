@@ -20,6 +20,14 @@
       <%= f.text_field :name, class: "form-control" %>
     </div>
 
+    <div class="form-group <%= error_class(object, :education_level)%>">
+      <label>
+        Jenjang
+        <%= error_messages(object, :education_level) %>
+      </label>
+      <%= f.text_field :education_level, class: "form-control" %>
+    </div>
+
     <div class="form-group <%= error_class(object, :faculty_id)%>">
       <label>
         Fakultas

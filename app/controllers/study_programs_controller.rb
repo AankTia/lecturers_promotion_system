@@ -54,6 +54,7 @@ private
             :faculty_id,
             :code,
             :name,
+            :education_level,
             :description
           )
   end
