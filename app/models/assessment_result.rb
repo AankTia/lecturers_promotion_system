@@ -12,11 +12,15 @@ class AssessmentResult < ActiveRecord::Base
 
   validates :code,                    presence: true,
                                       uniqueness: { case_sensitive: false }
-  validates :lecturer_id,             presence: true
-  validates :assessor_id,             presence: true
+  validates :lecturer_id,             presence: true,
+                                      inclusion: { in: proc { Lecturer.active.pluck(:id) }}
+  validates :assessor_id,             presence: true,
+                                      inclusion: { in: proc { Assessor.active.pluck(:id) }}
   validates :start_date,              presence: true,
                                       timeliness: { type: :date }
   validates :end_date,                presence: true,
                                       timeliness: { after: :start_at, type: :date}
   validates :assessment_result_lines, presence: true
+
+  scope :completed, -> { where(state: 'completed') }
 end

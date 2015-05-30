@@ -108,7 +108,7 @@ MARITAL_STATUS = ['Lajang', 'Menikah', 'Bercerai']
 # Lecturer seeds
   puts "Seed Lecturer..."
   (1..10).each do |index|
-    Lecturer.new(
+    object = Lecturer.new(
       registration_number_of_employees: rand(400000000..999999999).to_s,
       study_program_id: StudyProgram.pluck(:id).sample,
       rank_of_lecturer_id: RankOfLecturer.pluck(:id).sample,
@@ -120,13 +120,15 @@ MARITAL_STATUS = ['Lajang', 'Menikah', 'Bercerai']
       education: EDUCATION.sample,
       date_of_addmission: rand(DATE_OF_ADDMISSION_RANGE),
       marital_status: MARITAL_STATUS.sample
-    ).save!
+    )
+    object.save!
+    object.activate!
   end
 
 # Assessor seeds
   puts "Seed Assessor..."
   (1..10).each do |index|
-    Assessor.new(
+    object = Assessor.new(
       registration_number_of_employees: rand(400000000..999999999).to_s,
       study_program_id: StudyProgram.pluck(:id).sample,
       rank_of_lecturer_id: RankOfLecturer.pluck(:id).sample,
@@ -138,7 +140,9 @@ MARITAL_STATUS = ['Lajang', 'Menikah', 'Bercerai']
       education: EDUCATION.sample,
       date_of_addmission: rand(DATE_OF_ADDMISSION_RANGE),
       marital_status: MARITAL_STATUS.sample
-    ).save!
+    )
+    object.save!
+    object.activate!
   end
 
 # Assessment Result seeds
@@ -147,50 +151,58 @@ MARITAL_STATUS = ['Lajang', 'Menikah', 'Bercerai']
     start_date = rand(Date.new(1990, 01, 01)..Date.new(2015, 01, 01))
     end_date = start_date + 1.week
     (1..5).each do |index_assessment_result|
-      assessment_result = AssessmentResult.new(
-        lecturer_id: Lecturer.pluck(:id).sample,
-        assessor_id: Assessor.pluck(:id).sample,
+      object = AssessmentResult.new(
+        code: SecureRandom.uuid,
+        lecturer_id: Lecturer.active.pluck(:id).sample,
+        assessor_id: Assessor.active.pluck(:id).sample,
         start_date: start_date,
         end_date: end_date
       )
 
       PercentageAssessment.all.each do |percentage_assessment|
-        assessment_result.assessment_result_lines.build(
+        object.assessment_result_lines.build(
           percentage_assessment_id: percentage_assessment.id,
           value: rand(1..100)
         )
       end
 
-      AssessmentResult::Action::Save.new(assessment_result: assessment_result).run
+      AssessmentResult::Action::Save.new(assessment_result: object).run!
+      object.confirm!
+      object.complete!
     end
   end
 
 # List Of Ratings Execution Of Work
   puts "Seed List Of Ratings Execution Of Work..."
-  AssessmentResult.all.each do |assessment_result|
-    ListOfRatingsExecutionOfWork.new(
+  AssessmentResult.completed.each do |assessment_result|
+    object = ListOfRatingsExecutionOfWork.new(
       assessment_result_id: assessment_result.id,
-      assessor_id: Assessor.pluck(:id).sample
-    ).save
+      assessor_id: Assessor.active.pluck(:id).sample
+    )
+    object.save!
+    object.confirm!
+    object.complete!
   end
 
 
 # Preferment
   puts "Seed Preferment..."
-  ListOfRatingsExecutionOfWork.all.each do |execution_of_work|
-    preferment = Preferment.new(
+  ListOfRatingsExecutionOfWork.completed.each do |execution_of_work|
+    object = Preferment.new(
       list_of_ratings_execution_of_work_id: execution_of_work.id,
       rank_of_lecturer_id: RankOfLecturer.pluck(:id).sample,
       decision_letter_number: SecureRandom.uuid,
       submissions_preferment_date: Time.now,
       preferment_date: Time.now + 1.week
     )
-    Preferment::Action::Save.new(preferment: preferment).run
+    Preferment::Action::Save.new(preferment: object).run!
+    object.confirm!
+    object.complete!
   end
 
 # Periodic Preferment
   puts 'Seed Periodic Preferment...'
-  Preferment.all.each do |preferment|
+  Preferment.completed.each do |preferment|
     PeriodicPreferment.new(
       preferment_id: preferment.id,
       periodic_preferment_date: rand(Date.new(1990, 01, 01)..Date.new(2015, 01, 01)),

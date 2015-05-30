@@ -20,4 +20,5 @@ class Assessor < ActiveRecord::Base
                                   timeliness: { type: :date}
   validates :marital_status,      presence: true
 
+  scope :active, -> { where(state: 'active') }
 end

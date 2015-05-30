@@ -10,7 +10,10 @@ class ListOfRatingsExecutionOfWork < ActiveRecord::Base
   belongs_to :assessment_result
   belongs_to :assessor
 
-  validates :assessor_id,           presence: true
-  validates :assessment_result_id,  presence: true
+  validates :assessor_id,           presence: true,
+                                    inclusion: { in: proc { Assessor.active.pluck(:id) }}
+  validates :assessment_result_id,  presence: true,
+                                    inclusion: { in: proc { AssessmentResult.completed.pluck(:id) }}
 
+  scope :completed, -> { where(state: 'completed') }
 end

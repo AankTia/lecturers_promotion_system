@@ -18,7 +18,7 @@ private
   def retain_attribute
     assessment_result_calculator = AssessmentResultCalculator.new(assessment_result: assessment_result)
 
-    assessment_result.code = generate_code if assessment_result.new_record?
+    assessment_result.code = generate_code if assessment_result.new_record? & !assessment_result.code.present?
     assessment_result.weighting_value = assessment_result_calculator.weighting_value
     assessment_result.average_value = assessment_result_calculator.average_value
   end

@@ -19,4 +19,6 @@ class Lecturer < ActiveRecord::Base
   validates :date_of_addmission,  presence: true,
                                   timeliness: { type: :date}
   validates :marital_status,      presence: true
+
+  scope :active, -> { where(state: 'active') }
 end
