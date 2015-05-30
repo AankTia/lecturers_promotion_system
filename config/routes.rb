@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     post :revise,   on: :member
     post :cancel,   on: :member
     post :complete, on: :member
+    post :create_list_of_ratings_execution_of_work, on: :member
   end
   resources :assessors do
     post :activate,   on: :member

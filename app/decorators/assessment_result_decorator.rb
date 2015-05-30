@@ -1,7 +1,10 @@
 class AssessmentResultDecorator < ApplicationDecorator
 
   def action
-    default_state_action
+    [
+      default_state_action,
+      link_to_create_list_of_ratings_execution_of_work
+    ].join(" ").html_safe
   end
 
   def data_to_show
@@ -67,6 +70,11 @@ class AssessmentResultDecorator < ApplicationDecorator
       }
     end
     result
+  end
+
+  def link_to_create_list_of_ratings_execution_of_work
+    url = h.send("create_list_of_ratings_execution_of_work_#{object_name_singularize}_url",object)
+    h.link_to "Buat DP3", url, method: :post, class: "btn btn-info btn-sm" if object.state == 'completed'
   end
 
 end

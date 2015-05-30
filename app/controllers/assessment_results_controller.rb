@@ -67,6 +67,16 @@ class AssessmentResultsController < ApplicationController
     complete_callback_for @object
   end
 
+  def create_list_of_ratings_execution_of_work
+    @object = find_by_and_decorate(params[:id])
+    action = AssessmentResult::Action::CreateListOfRatingsExecutionOfWork.new(assessment_result: @object)
+    if action.run
+      redirect_to action.list_of_ratings_execution_of_work
+    else
+      redirect_to object, flash: {alert: "Tidak bisa membuat DP3"}
+    end
+  end
+
 private
 
   def find_by_and_decorate(id)
