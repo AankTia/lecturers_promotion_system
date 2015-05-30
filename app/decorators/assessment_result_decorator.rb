@@ -4,44 +4,12 @@ class AssessmentResultDecorator < ApplicationDecorator
     default_state_action
   end
 
-  def index_data
-    [
-      {
-        title: 'Dosen',
-        value: h.link_to(lecturer.try(:name), lecturer)
-      },
-      {
-        title: 'Nilai Pembobotan',
-        value: weighting_value
-      },
-      {
-        title: 'Nilai Rata-rata',
-        value: average_value
-      },
-      {
-        title: 'Penilai',
-        value: h.link_to(assessor.try(:name), assessor)
-      },
-      {
-        title: 'Tanggal Awal Penilaian',
-        value: date_format_for(start_date)
-      },
-      {
-        title: 'Tanggal Akhir Penilaian',
-        value: date_format_for(end_date)
-      },
-      {
-        title: 'Status',
-        value: state
-      }
-    ] + default_state_index_data
-  end
-
-  def show_data
+  def data_to_show
     [
       {
         title: 'Kode',
-        value: code
+        value: code,
+        index: false
       },
       {
         title: 'Dosen',
@@ -72,7 +40,7 @@ class AssessmentResultDecorator < ApplicationDecorator
         title: 'Status',
         value: state
       }
-    ] + default_show_data
+    ]
   end
 
   def show_lines_data

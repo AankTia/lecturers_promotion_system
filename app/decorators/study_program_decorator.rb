@@ -4,20 +4,7 @@ class StudyProgramDecorator < ApplicationDecorator
     default_crud
   end
 
-  def index_data
-    [
-      {
-        title: 'Kode',
-        value: code
-      },
-      {
-        title: 'Nama',
-        value: name
-      }
-    ] + default_index_data
-  end
-
-  def show_data
+  def data_to_show
     [
       {
         title: 'Kode',
@@ -28,13 +15,22 @@ class StudyProgramDecorator < ApplicationDecorator
         value: name
       },
       {
+        title: 'Fakultas',
+        value: link_to_faculty
+      },
+      {
         title: 'Deskripsi',
-        value: description_raw
+        value: description_raw,
+        index: false
       }
-    ] + default_show_data
+    ]
   end
 
   def description_raw
     description.present? ? h.raw(description) : '-'
+  end
+
+  def link_to_faculty
+    h.link_to faculty.name, faculty
   end
 end

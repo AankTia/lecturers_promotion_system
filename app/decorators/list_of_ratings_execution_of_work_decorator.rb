@@ -7,24 +7,7 @@ class ListOfRatingsExecutionOfWorkDecorator < ApplicationDecorator
     ].join(" ").html_safe
   end
 
-  def index_data
-    [
-      {
-        title: 'Dosen',
-        value:link_to_lecturer
-      },
-      {
-        title: 'Atasan Penilai',
-        value: link_to_assessor
-      },
-      {
-        title: 'Status',
-        value: state
-      }
-    ] + default_state_index_data
-  end
-
-  def show_data
+  def data_to_show
     [
       {
         title: 'Kode',
@@ -40,33 +23,39 @@ class ListOfRatingsExecutionOfWorkDecorator < ApplicationDecorator
       },
       {
         title: 'Keberatan',
-        value: objection_raw
+        value: objection_raw,
+        index: false
       },
       {
         title: 'Tanggal Keberatan',
-        value: date_format_for(objection_date)
+        value: date_format_for(objection_date),
+        index: false
       },
       {
         title: 'Tanggapan',
-        value: response_raw
+        value: response_raw,
+        index: false
       },
       {
         title: 'Tanggal Tanggapan',
-        value: date_format_for(response_date)
+        value: date_format_for(response_date),
+        index: false
       },
       {
         title: 'Keputusan',
-        value: decision_raw
+        value: decision_raw,
+        index: false
       },
       {
         title: 'Tanggal Keputusan',
-        value: date_format_for(decision_date)
+        value: date_format_for(decision_date),
+        index: false
       },
       {
         title: 'Status',
         value: state
       }
-    ] + default_show_data
+    ]
   end
 
   def link_to_lecturer

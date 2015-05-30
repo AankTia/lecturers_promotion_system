@@ -19,8 +19,12 @@
               <tbody role="alert" aria-live="polite" aria-relevant="all">
                 <% index_data.each_with_index do |obj, index| %>
                   <tr>
-                    <% obj.each do |data| %>
-                      <td><%= data[:value] %></td>
+                    <% obj.each_with_index do |data, index| %>
+                      <% if obj.size == index+1 %>
+                        <td width="50"><%= data[:value] %></td>
+                      <% else %>
+                        <td><%= data[:value] %></td>
+                      <% end %>
                     <% end %>
                   </tr>
                 <% end %>

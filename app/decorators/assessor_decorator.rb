@@ -4,24 +4,7 @@ class AssessorDecorator < ApplicationDecorator
     active_inactive_state_action
   end
 
-  def index_data
-    [
-      {
-        title: 'NIK',
-        value: registration_number_of_employees
-      },
-      {
-        title: 'Nama',
-        value: name
-      },
-      {
-        title: 'Status',
-        value: state
-      }
-    ] + active_inactive_state_index_data
-  end
-
-  def show_data
+  def data_to_show
     [
       {
         title: 'NIK',
@@ -33,49 +16,59 @@ class AssessorDecorator < ApplicationDecorator
       },
       {
         title: 'Tempat Lahir',
-        value: place_of_birth
+        value: place_of_birth,
+        index: false
       },
       {
         title: 'Tanggal Lahir',
-        value: date_format_for(date_of_birth)
+        value: date_format_for(date_of_birth),
+        index: false
       },
       {
         title: 'Jenis Kelamin',
-        value: gender
+        value: gender,
+        index: false
       },
       {
-        title: 'Status',
-        value: marital_status
+        title: 'Status Pernikahan',
+        value: marital_status,
+        index: false
       },
       {
         title: 'Nomor Kontak',
-        value: contact_number
+        value: contact_number,
+        index: false
       },
       {
         title: 'Pendidikan',
-        value: education
+        value: education,
+        index: false
       },
       {
         title: 'Alamat',
-        value: address_format
+        value: address_format,
+        index: false
       },
       {
         title: 'Program Studi',
-        value: link_to_study_program
+        value: link_to_study_program,
+        index: false
       },
       {
         title: 'Jabatan',
-        value: link_to_rank_of_lecturer
+        value: link_to_rank_of_lecturer,
+        index: false
       },
       {
         title: 'Tanggal Masuk',
-        value: date_format_for(date_of_addmission)
+        value: date_format_for(date_of_addmission),
+        index: false
       },
       {
         title: 'Status',
         value: state
       }
-    ] + default_show_data
+    ]
   end
 
   def address_format

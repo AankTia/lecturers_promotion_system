@@ -4,32 +4,7 @@ class PrefermentDecorator < ApplicationDecorator
     default_state_action
   end
 
-  def index_data
-    [
-      {
-        title: 'DP3',
-        value: h.link_to(list_of_ratings_execution_of_work.code, list_of_ratings_execution_of_work)
-      },
-      {
-        title: 'Pangkat Baru',
-        value: h.link_to(rank_of_lecturer.name, rank_of_lecturer)
-      },
-      {
-        title: 'No SK',
-        value: decision_letter_number
-      },
-      {
-        title: 'Tanggal Pengajuan Kenaikan Pangkat',
-        value: date_format_for(submissions_preferment_date)
-      },
-      {
-        title: 'Status',
-        value: state
-      }
-    ] + default_state_index_data
-  end
-
-  def show_data
+  def data_to_show
     [
       {
         title: 'DP3',
@@ -45,7 +20,8 @@ class PrefermentDecorator < ApplicationDecorator
       },
       {
         title: 'Masa Kerja',
-        value: work_period_detail
+        value: work_period_detail,
+        index: false
       },
       {
         title: 'No SK Kenaikan Pangkat',
@@ -57,13 +33,14 @@ class PrefermentDecorator < ApplicationDecorator
       },
       {
         title: 'Tanggal Kenaikan Pangkat',
-        value: date_format_for(preferment_date)
+        value: date_format_for(preferment_date),
+        index: false
       },
       {
         title: 'Status',
         value: state
       }
-    ] + default_show_data
+    ]
   end
 
   def work_period_detail

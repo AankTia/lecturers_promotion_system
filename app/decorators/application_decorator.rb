@@ -4,6 +4,16 @@ class ApplicationDecorator < Draper::Decorator
   delegate_all
   delegate :current_page, :total_pages, :limit_value
 
+  def index_data
+    result = []
+    data_to_show.each { |d| result << d if d[:index] != false }
+    result + default_index_data
+  end
+
+  def show_data
+    data_to_show + default_show_data
+  end
+
   def default_crud
     [
       link_to_new,
@@ -47,64 +57,6 @@ class ApplicationDecorator < Draper::Decorator
       {
         title:'',
         value: link_to_show
-      },
-      {
-        title: '',
-        value: link_to_edit
-      },
-      {
-        title: '',
-        value: link_to_destroy
-      }
-    ]
-  end
-
-  def default_state_index_data
-    [
-      {
-        title: 'Tanggal Dibuat',
-        value: created_at_format
-      },
-      {
-        title: 'Tanggal Diperbaharui',
-        value: updated_at_format
-      },
-      {
-        title:'',
-        value: link_to_show
-      },
-      {
-        title: '',
-        value: (object.draft? ? link_to_edit : '')
-      },
-      {
-        title: '',
-        value: (object.draft? ? link_to_destroy : '')
-      }
-    ]
-  end
-
-  def active_inactive_state_index_data
-    [
-      {
-        title: 'Tanggal Dibuat',
-        value: created_at_format
-      },
-      {
-        title: 'Tanggal Diperbaharui',
-        value: updated_at_format
-      },
-      {
-        title:'',
-        value: link_to_show
-      },
-      {
-        title: '',
-        value: (object.inactive? ? link_to_edit : '')
-      },
-      {
-        title: '',
-        value: (object.inactive? ? link_to_destroy : '')
       }
     ]
   end

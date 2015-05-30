@@ -4,24 +4,7 @@ class RankOfLecturerDecorator < ApplicationDecorator
     default_crud
   end
 
-  def index_data
-    [
-      {
-        title: 'Nama',
-        value: name
-      },
-      {
-        title: 'Simbol',
-        value: symbol
-      },
-      {
-        title: 'Gaji Pokok',
-        value: basic_salary_format
-      }
-    ] + default_index_data
-  end
-
-  def show_data
+  def data_to_show
     [
       {
         title: 'Nama',
@@ -37,9 +20,10 @@ class RankOfLecturerDecorator < ApplicationDecorator
       },
       {
         title: 'Deskripsi',
-        value: description_raw
+        value: description_raw,
+        index: false
       }
-    ] + default_show_data
+    ]
   end
 
   def description_raw

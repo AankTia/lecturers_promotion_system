@@ -7,7 +7,7 @@ class PeriodicPrefermentDecorator < ApplicationDecorator
     ].join(" ").html_safe
   end
 
-  def index_data
+  def data_to_show
     [
       {
         title: 'No SK Kenaikan Pangkat',
@@ -25,28 +25,7 @@ class PeriodicPrefermentDecorator < ApplicationDecorator
         title: 'Status',
         value: state
       }
-    ] + default_state_index_data
-  end
-
-  def show_data
-    [
-      {
-        title: 'No SK Kenaikan Pangkat',
-        value: h.link_to(preferment.decision_letter_number, preferment)
-      },
-      {
-        title: 'No SK Kenaikan Pangkat Berkala',
-        value: periodic_preferment_number
-      },
-      {
-        title: 'Tanggal Kenaikan Pangkat Berkala',
-        value: date_format_for(periodic_preferment_date)
-      },
-      {
-        title: 'Status',
-        value: state
-      }
-    ] + default_show_data
+    ]
   end
 
   def link_to_export_pdf
