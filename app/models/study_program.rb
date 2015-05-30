@@ -1,7 +1,16 @@
 class StudyProgram < ActiveRecord::Base
+  extend Enumerize
+
+  DIPLOMA = 'diploma'
+  SARJANA = 'sarjana'
+  MAGISTER = 'magister'
+  DOCTOR = 'doctor'
+
   attr_readonly :code
 
   belongs_to :faculty
+
+  enumerize :education_level, in: [DIPLOMA, SARJANA, MAGISTER, DOCTOR]
 
   validates :code,            presence: true,
                               length:     { in: 1..255 },

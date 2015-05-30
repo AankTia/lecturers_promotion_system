@@ -25,7 +25,11 @@
         Jenjang
         <%= error_messages(object, :education_level) %>
       </label>
-      <%= f.text_field :education_level, class: "form-control" %>
+      <%= f.select(
+            :education_level,
+            options_for_select(StudyProgram.education_level.options, object.education_level),
+            { include_blank: true },
+            { class: "form-control" }) %>
     </div>
 
     <div class="form-group <%= error_class(object, :faculty_id)%>">

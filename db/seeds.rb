@@ -6,11 +6,8 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-EDUCATION = ['SMA', 'Diploma', 'Sarjana', 'Magister', 'Doctor']
-GENDER = ['Laki-laki', 'Perempuan']
 DATE_OF_BIRTH_RANGE = Date.new(1970, 01, 01)..Date.new(1980, 01, 01)
 DATE_OF_ADDMISSION_RANGE = Date.new(1990, 01, 01)..Date.new(2015, 01, 01)
-MARITAL_STATUS = ['Lajang', 'Menikah', 'Bercerai']
 
 # User seeds
   puts "Seed User..."
@@ -39,26 +36,26 @@ MARITAL_STATUS = ['Lajang', 'Menikah', 'Bercerai']
 
 # Study Program seeds
   puts "Seed Study Program..."
-  [ {code: 'FKIP-PBSI-S1', name: 'Pendidikan Bahasa dan Sastra Indonesia ', faculty_code: 'FKIP', level: 'Sarjana'},
-    {code: 'FKIP-PB-S1', name: 'Pendidikan Biologi', faculty_code: 'FKIP', level: 'Sarjana'},
-    {code: 'FKIP-PE-S1', name: 'Pendidikan Ekonomi', faculty_code: 'FKIP', level: 'Sarjana'},
-    {code: 'FKIP-PBI-S1', name: 'Pendidikan Bahasa Inggris', faculty_code: 'FKIP', level: 'Sarjana'},
-    {code: 'FKIP-PGDS-S1', name: 'Pendidikan Guru Sekolah Dasar', faculty_code: 'FKIP', level: 'Sarjana'},
-    {code: 'FKIP-PM-S1', name: 'Pendidikan Matematika', faculty_code: 'FKIP', level: 'Sarjana'},
-    {code: 'FE-M-S1', name: 'Manajemen', faculty_code: 'FE', level: 'Sarjana'},
-    {code: 'FE-A-S1', name: 'Akuntansi', faculty_code: 'FE', level: 'Sarjana'},
-    {code: 'FHUT-IK-S1', name: 'Ilmu Kehutanan', faculty_code: 'FHUT', level: 'Sarjana'},
-    {code: 'FKOM-TI-S1', name: 'Teknik Informatika', faculty_code: 'FKOM', level: 'Sarjana'},
-    {code: 'FKOM-SI-S1', name: 'Sistem Informasi', faculty_code: 'FKOM', level: 'Sarjana'},
-    {code: 'FKOM-TI-D3', name: 'Teknik Informatika (D3)', faculty_code: 'FKOM', level: 'Diploma'},
-    {code: 'FKOM-MI-D3', name: 'Manajemen Informatika (D3)', faculty_code: 'FKOM', level: 'Diploma'},
-    {code: 'FH-IH-S1', name: 'Ilmu Hukum', faculty_code: 'FH', level: 'Sarjana'},
+  [ {code: 'FKIP-PBSI-S1', name: 'Pendidikan Bahasa dan Sastra Indonesia ', faculty_code: 'FKIP', education_level: StudyProgram::SARJANA},
+    {code: 'FKIP-PB-S1', name: 'Pendidikan Biologi', faculty_code: 'FKIP', education_level: StudyProgram::SARJANA},
+    {code: 'FKIP-PE-S1', name: 'Pendidikan Ekonomi', faculty_code: 'FKIP', education_level: StudyProgram::SARJANA},
+    {code: 'FKIP-PBI-S1', name: 'Pendidikan Bahasa Inggris', faculty_code: 'FKIP', education_level: StudyProgram::SARJANA},
+    {code: 'FKIP-PGDS-S1', name: 'Pendidikan Guru Sekolah Dasar', faculty_code: 'FKIP', education_level: StudyProgram::SARJANA},
+    {code: 'FKIP-PM-S1', name: 'Pendidikan Matematika', faculty_code: 'FKIP', education_level: StudyProgram::SARJANA},
+    {code: 'FE-M-S1', name: 'Manajemen', faculty_code: 'FE', education_level: StudyProgram::SARJANA},
+    {code: 'FE-A-S1', name: 'Akuntansi', faculty_code: 'FE', education_level: StudyProgram::SARJANA},
+    {code: 'FHUT-IK-S1', name: 'Ilmu Kehutanan', faculty_code: 'FHUT', education_level: StudyProgram::SARJANA},
+    {code: 'FKOM-TI-S1', name: 'Teknik Informatika', faculty_code: 'FKOM', education_level: StudyProgram::SARJANA},
+    {code: 'FKOM-SI-S1', name: 'Sistem Informasi', faculty_code: 'FKOM', education_level: StudyProgram::SARJANA},
+    {code: 'FKOM-TI-D3', name: 'Teknik Informatika (D3)', faculty_code: 'FKOM', education_level: StudyProgram::DIPLOMA},
+    {code: 'FKOM-MI-D3', name: 'Manajemen Informatika (D3)', faculty_code: 'FKOM', education_level: StudyProgram::DIPLOMA},
+    {code: 'FH-IH-S1', name: 'Ilmu Hukum', faculty_code: 'FH', education_level: StudyProgram::SARJANA},
   ].each do |study_program|
     StudyProgram.new(
       code: study_program[:code],
       name: study_program[:name],
       faculty_id: Faculty.find_by(code: study_program[:faculty_code]).id,
-      education_level: study_program[:level]
+      education_level: study_program[:education_level]
     ).save!
   end
 
@@ -116,11 +113,11 @@ MARITAL_STATUS = ['Lajang', 'Menikah', 'Bercerai']
       name: "Dosen-#{index}",
       place_of_birth: "Kuningan",
       date_of_birth: rand(DATE_OF_BIRTH_RANGE),
-      gender: GENDER.sample,
+      gender: Lecturer.gender.values.sample,
       position: 'Pengajar',
-      education: EDUCATION.sample,
+      education: Lecturer.education.values.sample,
       date_of_addmission: rand(DATE_OF_ADDMISSION_RANGE),
-      marital_status: MARITAL_STATUS.sample
+      marital_status: Lecturer.marital_status.values.sample
     )
     object.save!
     object.activate!
@@ -136,11 +133,11 @@ MARITAL_STATUS = ['Lajang', 'Menikah', 'Bercerai']
       name: "Penilai-#{index}",
       place_of_birth: "Kuningan",
       date_of_birth: rand(DATE_OF_BIRTH_RANGE),
-      gender: GENDER.sample,
+      gender: Assessor.gender.values.sample,
       position: 'Pengajar',
-      education: EDUCATION.sample,
+      education: Assessor.education.values.sample,
       date_of_addmission: rand(DATE_OF_ADDMISSION_RANGE),
-      marital_status: MARITAL_STATUS.sample
+      marital_status: Assessor.marital_status.values.sample
     )
     object.save!
     object.activate!

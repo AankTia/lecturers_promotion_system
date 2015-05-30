@@ -1,5 +1,23 @@
 class Lecturer < ActiveRecord::Base
   include ActiveInactiveStateTransitions
+  extend Enumerize
+
+  MALE = 'male'
+  FEMALE = 'female'
+
+  LAJANG = 'lajang'
+  MENIKAH = 'menikah'
+  BERCERAI = 'bercerai'
+
+  SMA = 'sma'
+  DIPLOMA = 'diploma'
+  SARJANA = 'sarjana'
+  MAGISTER = 'magister'
+  DOCTOR = 'doctor'
+
+  enumerize :gender, in: [MALE, FEMALE]
+  enumerize :marital_status, in: [LAJANG, MENIKAH, BERCERAI]
+  enumerize :education, in: [SMA, DIPLOMA, SARJANA, MAGISTER, DOCTOR]
 
   belongs_to :study_program
   belongs_to :rank_of_lecturer
