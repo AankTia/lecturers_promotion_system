@@ -14,6 +14,13 @@ class ListOfRatingsExecutionOfWork < ActiveRecord::Base
                                     inclusion: { in: proc { Assessor.active.pluck(:id) }}
   validates :assessment_result_id,  presence: true,
                                     inclusion: { in: proc { AssessmentResult.completed.pluck(:id) }}
+  validate  :uniq_assessor
 
   scope :completed, -> { where(state: 'completed') }
+
+  def uniq_assessor
+    if assessor_id == assessment_result.assessor_id
+      errors.messages[:assessor_id] = ["Atasan Penilai sama dengan Penilai dalam Penilaian"]
+    end
+  end
 end
