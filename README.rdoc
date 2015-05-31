@@ -1,3 +1,4 @@
+{<img src="https://codeclimate.com/github/AankTia/lecturers_promotion_system/badges/gpa.svg" />}[https://codeclimate.com/github/AankTia/lecturers_promotion_system]
 == README
 
 This README would normally document whatever steps are necessary to get the
