@@ -14,7 +14,7 @@ module ActiveInactiveStateTransitionCallback
   end
 
   def destroy_callback_for(object)
-    if object.draft? && object.destroy
+    if object.inactive? && object.destroy
       url = send("#{object.object.class.to_s.tableize}_url")
       redirect_to url
     else
