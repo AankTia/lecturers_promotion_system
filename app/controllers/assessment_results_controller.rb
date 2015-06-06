@@ -86,10 +86,9 @@ private
   def assessment_result_params
     params.require(:assessment_result)
           .permit(
+            :assessment_range_id,
             :lecturer_id,
             :assessor_id,
-            :start_date,
-            :end_date,
             assessment_result_lines_attributes: [
               :percentage_assessment_id,
               :value,

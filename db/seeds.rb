@@ -6,8 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-DATE_OF_BIRTH_RANGE = Date.new(1970, 01, 01)..Date.new(1980, 01, 01)
-DATE_OF_ADDMISSION_RANGE = Date.new(1990, 01, 01)..Date.new(2015, 01, 01)
+DATE_RANGE = Date.new(1970, 01, 01)..Date.new(1980, 01, 01)
 
 # User seeds
   puts "Seed User..."
@@ -86,6 +85,46 @@ DATE_OF_ADDMISSION_RANGE = Date.new(1990, 01, 01)..Date.new(2015, 01, 01)
     ).save!
   end
 
+# Lecturer seeds
+  puts "Seed Lecturer..."
+  (1..10).each do |index|
+    object = Lecturer.new(
+      registration_number_of_employees: rand(400000000..999999999).to_s,
+      study_program_id: StudyProgram.pluck(:id).sample,
+      rank_of_lecturer_id: RankOfLecturer.pluck(:id).sample,
+      name: "Dosen-#{index}",
+      place_of_birth: "Kuningan",
+      date_of_birth: rand(DATE_RANGE),
+      gender: Lecturer.gender.values.sample,
+      position: 'Pengajar',
+      education: Lecturer.education.values.sample,
+      date_of_addmission: rand(DATE_RANGE),
+      marital_status: Lecturer.marital_status.values.sample
+    )
+    object.save!
+    object.activate!
+  end
+
+# Assessor seeds
+  puts "Seed Assessor..."
+  (1..10).each do |index|
+    object = Assessor.new(
+      registration_number_of_employees: rand(400000000..999999999).to_s,
+      study_program_id: StudyProgram.pluck(:id).sample,
+      rank_of_lecturer_id: RankOfLecturer.pluck(:id).sample,
+      name: "Penilai-#{index}",
+      place_of_birth: "Kuningan",
+      date_of_birth: rand(DATE_RANGE),
+      gender: Assessor.gender.values.sample,
+      position: 'Pengajar',
+      education: Assessor.education.values.sample,
+      date_of_addmission: rand(DATE_RANGE),
+      marital_status: Assessor.marital_status.values.sample
+    )
+    object.save!
+    object.activate!
+  end
+
 # PercentageAssessment seeds
   puts "Seed Percentage Assessment..."
   [ {name: "Kesetiaan", value: BigDecimal.new('10.0')},
@@ -103,41 +142,13 @@ DATE_OF_ADDMISSION_RANGE = Date.new(1990, 01, 01)..Date.new(2015, 01, 01)
     ).save!
   end
 
-# Lecturer seeds
-  puts "Seed Lecturer..."
-  (1..10).each do |index|
-    object = Lecturer.new(
-      registration_number_of_employees: rand(400000000..999999999).to_s,
-      study_program_id: StudyProgram.pluck(:id).sample,
-      rank_of_lecturer_id: RankOfLecturer.pluck(:id).sample,
-      name: "Dosen-#{index}",
-      place_of_birth: "Kuningan",
-      date_of_birth: rand(DATE_OF_BIRTH_RANGE),
-      gender: Lecturer.gender.values.sample,
-      position: 'Pengajar',
-      education: Lecturer.education.values.sample,
-      date_of_addmission: rand(DATE_OF_ADDMISSION_RANGE),
-      marital_status: Lecturer.marital_status.values.sample
-    )
-    object.save!
-    object.activate!
-  end
-
-# Assessor seeds
-  puts "Seed Assessor..."
-  (1..10).each do |index|
-    object = Assessor.new(
-      registration_number_of_employees: rand(400000000..999999999).to_s,
-      study_program_id: StudyProgram.pluck(:id).sample,
-      rank_of_lecturer_id: RankOfLecturer.pluck(:id).sample,
-      name: "Penilai-#{index}",
-      place_of_birth: "Kuningan",
-      date_of_birth: rand(DATE_OF_BIRTH_RANGE),
-      gender: Assessor.gender.values.sample,
-      position: 'Pengajar',
-      education: Assessor.education.values.sample,
-      date_of_addmission: rand(DATE_OF_ADDMISSION_RANGE),
-      marital_status: Assessor.marital_status.values.sample
+# AssesmentRange seeds
+  puts "Seed Assessment Range..."
+  (1..5).each do |index|
+    start_date = rand(DATE_RANGE)
+    object = AssessmentRange.new(
+      start_date: start_date,
+      end_date: start_date + 6.month
     )
     object.save!
     object.activate!
@@ -145,16 +156,13 @@ DATE_OF_ADDMISSION_RANGE = Date.new(1990, 01, 01)..Date.new(2015, 01, 01)
 
 # Assessment Result seeds
   puts "Seed Assessment Result..."
-  (1..5).each do |index_date_range|
-    start_date = rand(Date.new(1990, 01, 01)..Date.new(2015, 01, 01))
-    end_date = start_date + 1.week
-    (1..5).each do |index_assessment_result|
+  AssessmentRange.active.each do |assessment_range|
+    Lecturer.active.each do |lecturer|
       object = AssessmentResult.new(
         code: SecureRandom.uuid,
-        lecturer_id: Lecturer.active.pluck(:id).sample,
-        assessor_id: Assessor.active.pluck(:id).sample,
-        start_date: start_date,
-        end_date: end_date
+        assessment_range_id: assessment_range.id,
+        lecturer_id: lecturer.id,
+        assessor_id: Assessor.active.pluck(:id).sample
       )
 
       PercentageAssessment.all.each do |percentage_assessment|

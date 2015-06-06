@@ -3,6 +3,7 @@ class AssessmentResult < ActiveRecord::Base
 
   attr_readonly :code
 
+  belongs_to :assessment_range
   belongs_to :lecturer
   belongs_to :assessor
 
@@ -12,14 +13,12 @@ class AssessmentResult < ActiveRecord::Base
 
   validates :code,                    presence: true,
                                       uniqueness: { case_sensitive: false }
+  validates :assessment_range_id,     presence: true,
+                                      inclusion: { in: proc { AssessmentRange.active.pluck(:id) }}
   validates :lecturer_id,             presence: true,
                                       inclusion: { in: proc { Lecturer.active.pluck(:id) }}
   validates :assessor_id,             presence: true,
                                       inclusion: { in: proc { Assessor.active.pluck(:id) }}
-  validates :start_date,              presence: true,
-                                      timeliness: { type: :date }
-  validates :end_date,                presence: true,
-                                      timeliness: { after: :start_at, type: :date}
   validates :assessment_result_lines, presence: true
 
   scope :completed, -> { where(state: 'completed') }

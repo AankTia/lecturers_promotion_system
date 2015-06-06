@@ -1,0 +1,26 @@
+<%= form_for(object) do |f| %>
+  <div class="box-body">
+    <div class="form-group <%= error_class(object, :start_date)%>">
+      <label>
+        Tanggal Awal
+        <%= error_messages(object, :start_date) %>
+      </label>
+      <%= f.date_field :start_date, class: "form-control" %>
+    </div>
+    <div class="form-group <%= error_class(object, :end_date)%>">
+      <label>
+        Tanggal Akhir
+        <%= error_messages(object, :end_date) %>
+      </label>
+      <%= f.date_field :end_date, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <label>Deskripsi</label>
+      <%= f.text_area :description, rows: 3, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="box-footer">
+    <%= f.submit 'Save', class: "btn btn-primary" %>
+  </div>
+<% end %>

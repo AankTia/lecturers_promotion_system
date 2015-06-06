@@ -33,11 +33,11 @@ class AssessmentResultDecorator < ApplicationDecorator
 
       {
         title: 'Tanggal Awal Penilaian',
-        value: date_format_for(start_date)
+        value: date_format_for(assessment_range.start_date)
       },
       {
         title: 'Tanggal Akhir Penilaian',
-        value: date_format_for(end_date)
+        value: date_format_for(assessment_range.end_date)
       },
       {
         title: 'Status',

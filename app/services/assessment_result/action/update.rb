@@ -15,6 +15,7 @@ class AssessmentResult::Action::Update < ResourceAction::Base
 
   def retain_attribute
     assessment_result.update(
+      assessment_range_id: params[:assessment_range_id],
       lecturer_id: params[:lecturer_id],
       assessor_id: params[:assessor_id]
     )

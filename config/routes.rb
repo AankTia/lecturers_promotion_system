@@ -11,6 +11,10 @@ Rails.application.routes.draw do
     post :activate,   on: :member
     post :deactivate, on: :member
   end
+  resources :assessment_ranges do
+    post :activate,   on: :member
+    post :deactivate, on: :member
+  end
   resources :assessment_results do
     post :confirm,  on: :member
     post :revise,   on: :member

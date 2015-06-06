@@ -16,6 +16,7 @@ class AssessmentResult::Action::Save < ResourceAction::Base
 private
 
   def retain_attribute
+    assessment_range = assessment_result.assessment_range
     assessment_result_calculator = AssessmentResultCalculator.new(assessment_result: assessment_result)
 
     assessment_result.code = generate_code if assessment_result.new_record? & !assessment_result.code.present?
@@ -26,11 +27,10 @@ private
   def generate_code
     if assessment_result.lecturer.present? &&
        assessment_result.assessor.present? &&
-       assessment_result.start_date.present? &&
-       assessment_result.end_date.present?
+       assessment_range = assessment_result.assessment_range
        lecturer_registration_number = assessment_result.lecturer.registration_number_of_employees
        assessor_registration_number = assessment_result.assessor.registration_number_of_employees
-      "assessment_#{lecturer_registration_number}_#{assessor_registration_number}_#{assessment_result.start_date}_#{assessment_result.end_date}"
+      "#{assessment_range.code}_#{lecturer_registration_number}_#{assessor_registration_number}"
     else
       nil
     end
