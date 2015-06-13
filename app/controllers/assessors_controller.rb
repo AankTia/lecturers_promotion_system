@@ -4,8 +4,7 @@ class AssessorsController < ApplicationController
   before_filter :authenticate_user!, :set_page_title
 
   def index
-    @object = Assessor.order(updated_at: :desc).page(params[:page]).per(10)
-    generate_index_data_for @object
+    @object = Assessor.order(updated_at: :desc).decorate
     set_breadcrumb_for_index
   end
 

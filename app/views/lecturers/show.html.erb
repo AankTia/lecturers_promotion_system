@@ -1,1 +1,56 @@
-<%= render "layouts/default_show", title: 'Dosen' ,object: @object %>
+<div class="row">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <%= @object.action %>
+        <div class="clearfix"></div>
+      </div>
+
+      <div class="x_content">
+        <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+          <div class="profile_img">
+            <div id="crop-avatar">
+              <div class="avatar-view" title="" data-original-title="Change the avatar">
+                <%= image_tag("images/user.png", alt: "Avatar") %>
+              </div>
+            </div>
+          </div>
+
+          <h3> <%= @object.name %></h3>
+
+          <ul class="list-unstyled user_data">
+            <li>
+              <i class="fa fa-map-marker user-profile-icon"></i>
+              <%= @object.address_format %>
+            </li>
+            <li>
+              <i class="fa fa-briefcase user-profile-icon"></i>
+              <%= @object.link_to_rank_of_lecturer %>
+            </li>
+            <li class="m-top-xs">
+              <i class="fa fa-external-link user-profile-icon"></i>
+              -
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-md-9 col-sm-9 col-xs-12">
+          <div class="form-horizontal form-label-left">
+            <% @object.show_data.each do |data| %>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                  <%= data[:title] %>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <label class="control-label">
+                    <%= data[:value] %>
+                  </label>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
