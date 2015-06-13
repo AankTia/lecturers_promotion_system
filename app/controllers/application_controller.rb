@@ -2,7 +2,8 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-  before_filter :set_breadcrumb
+  before_filter :set_breadcrumb,
+                :init_sidebar
 
   def set_breadcrumb
     add_breadcrumb "Home", :root_path
@@ -16,6 +17,10 @@ class ApplicationController < ActionController::Base
     @index_data = []
     decorated_objects = decorate object
     decorated_objects.each {|o| @index_data << o.index_data}
+  end
+
+  def init_sidebar
+    @sidebar = SidebarDecorator.new(params: params)
   end
 
 end

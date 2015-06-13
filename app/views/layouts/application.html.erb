@@ -1,23 +1,59 @@
 <!DOCTYPE html>
 <html>
   <%= render 'layouts/head' %>
-  
-  <body class="skin-blue">
-    <%= render 'layouts/topbar' %>
 
-    <div class="wrapper row-offcanvas row-offcanvas-left">
-      <%= render 'layouts/sidebar' %>
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <%= link_to 'Lecturer Promotion System', root_path, class: "site_title" %>
+            </div>
 
-      <aside class="right-side">
-        <%= render 'layouts/breadcrumb' %>
-        <section class="content">
-          <%= yield %>
+            <div class="clearfix"></div>
+            <%= render 'layouts/menu_prile_quick_info' %>
+            <br /><br />
 
-          <% if Rails.env.development? %>
-            <%= debug(params)  %>
-          <% end %>
-        </section>
-      </aside>
+            <%= render 'layouts/sidebar' %>
+          </div>
+        </div>
+
+        <%= render 'layouts/top_navigation' %>
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3><%= @page_title %></h3>
+              </div>
+
+              <div class="title_right">
+                <div class="pull-right">
+                  <%= render_breadcrumbs %>
+                </div>
+              </div>
+            </div>
+
+            <div class="clearfix"></div>
+            <%= render 'layouts/flash_message', flash: flash %>
+            <div class="clearfix"></div>
+
+            <%= yield %>
+          </div>
+
+          <%= render 'layouts/footer' %>
+        </div>
+        <!-- /page content -->
+      </div>
+    </div>
+
+    <div id="custom_notifications" class="custom-notifications dsp_none">
+      <ul class="list-unstyled notifications clearfix" data-tabbed_notifications="notif-group">
+      </ul>
+      <div class="clearfix"></div>
+      <div id="notif-group" class="tabbed_notifications"></div>
     </div>
 
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>

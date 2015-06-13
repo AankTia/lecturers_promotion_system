@@ -1,4 +1,4 @@
-class ListOfRatingsExecutionOfWorkDecorator < ApplicationDecorator
+class ListOfRatingsExecutionOfWorkDecorator < DefaultStateTransitionDecorator
 
   def action
     [
@@ -53,7 +53,7 @@ class ListOfRatingsExecutionOfWorkDecorator < ApplicationDecorator
       },
       {
         title: 'Status',
-        value: state
+        value: state_with_color
       }
     ]
   end

@@ -1,4 +1,4 @@
-class LecturerDecorator < ApplicationDecorator
+class LecturerDecorator < ActiveInacticeStateTransitionDecorator
 
   def action
     active_inactive_state_action
@@ -61,7 +61,7 @@ class LecturerDecorator < ApplicationDecorator
       },
       {
         title: 'Status',
-        value: state
+        value: state_with_color
       }
     ]
   end

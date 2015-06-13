@@ -1,4 +1,4 @@
-class AssessmentResultDecorator < ApplicationDecorator
+class AssessmentResultDecorator < DefaultStateTransitionDecorator
 
   def action
     [
@@ -41,7 +41,7 @@ class AssessmentResultDecorator < ApplicationDecorator
       },
       {
         title: 'Status',
-        value: state
+        value: state_with_color
       }
     ]
   end

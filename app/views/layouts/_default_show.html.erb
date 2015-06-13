@@ -1,58 +1,52 @@
-<% if flash[:notice].present? %>
-  <div class="alert alert-success alert-dismissable">
-    <i class="fa fa-check"></i>
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-    <%= flash[:notice] %>
-  </div>
-<% elsif flash[:alert].present? %>
-  <div class="alert alert-warning alert-dismissable">
-    <i class="fa fa-warning"></i>
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-    <%= flash[:alert] %>
-  </div>
-<% end %>
-
 <div class="row">
-  <div class="col-xs-12">
-    <div class="box box-primary">
-      <div class="margin">
-        <%= object.action %>
-      </div>
-
-      <div class="box-body">
-        <% object.show_data.each do |data| %>
-          <div class="form-group">
-            <label> <%= data[:title] %></label>
-            <p class="help-block"><%= data[:value] %></p>
-          </div>
-        <% end %>
-      </div>
-
-      <% if object.try(:show_lines_data).present? %>
-        <div class="box-body table-responsive">
-          <div id="example1_wrapper" class="dataTables_wrapper form-inline" role="grid">
-            <table id="example1" class="table table-bordered table-striped dataTable" aria-describedby="example1_info">
-              <thead>
-                <tr role="row">
-                <% object.show_lines_data[:header_data].each do |data| %>
-                  <th><%= data[:title] %></th>
-                <% end %>
-                </tr>
-              </thead>
-              <tbody role="alert" aria-live="polite" aria-relevant="all">
-                <% object.show_lines_data[:body_data].each do |data| %>
-                  <tr>
-                    <% object.show_lines_data[:header_data].each do |header| %>
-                      <td><%= data[header[:key]]%></td>
-                    <% end %>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+          <%= object.action %>
+          <div class="clearfix"></div>
         </div>
-      <% end %>
 
+        <div class="x_content">
+          <br>
+          <div class="form-horizontal form-label-left">
+            <% object.show_data.each do |data| %>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                  <%= data[:title] %>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <label class="control-label">
+                    <%= data[:value] %>
+                  </label>
+                </div>
+              </div>
+            <% end %>
+          </div>
+
+          <br>
+          <% if object.try(:show_lines_data).present? %>
+            <table class="table table-striped responsive-utilities jambo_table dataTable" aria-describedby="example_info">
+            <thead>
+              <tr class="headings" role="row">
+                <% object.show_lines_data[:header_data].each do |data| %>
+                  <th role="columnheader">
+                    <%= data[:title] %>
+                  </th>
+                <% end %>
+              </tr>
+            </thead>
+            <tbody role="alert" aria-live="polite" aria-relevant="all">
+              <% object.show_lines_data[:body_data].each do |data| %>
+                <tr class="pointer">
+                  <% object.show_lines_data[:header_data].each do |header| %>
+                    <td><%= data[header[:key]]%></td>
+                  <% end %>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <% end%>
+        </div>
     </div>
   </div>
 </div>

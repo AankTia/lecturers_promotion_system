@@ -19,4 +19,8 @@ class User < ActiveRecord::Base
   validates :password_confirmation, presence: true,
                                     confirmation: true,
                                     unless: lambda { |user| user.password.blank? }
+
+  def full_name
+    "#{first_name} #{last_name}"
+  end
 end

@@ -11,8 +11,8 @@ class PercentageAssessmentDecorator < ApplicationDecorator
         value: h.link_to(name, object)
       },
       {
-        title: 'Bobot Nilai (%)',
-        value: value
+        title: 'Bobot Nilai',
+        value: "#{value}%"
       },
       {
         title: 'Deskripsi',

@@ -1,4 +1,4 @@
-class PrefermentDecorator < ApplicationDecorator
+class PrefermentDecorator < DefaultStateTransitionDecorator
 
   def action
     default_state_action
@@ -38,7 +38,7 @@ class PrefermentDecorator < ApplicationDecorator
       },
       {
         title: 'Status',
-        value: state
+        value: state_with_color
       }
     ]
   end

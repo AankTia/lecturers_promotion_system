@@ -9,11 +9,17 @@
 -%>
 
 <% if page.current? %>
-  <li class="active">
-    <%= link_to page, url, {:remote => remote, :rel => page.next? ? 'next' : page.prev? ? 'prev' : nil} %>
-  </li>
+  <%= link_to page, url,
+                    { remote: remote,
+                      rel: page.next? ? 'next' : page.prev? ? 'prev' : nil,
+                      tabindex: "0",
+                      class: "paginate_active"
+                    } %>
 <% else %>
-  <li>
-    <%= link_to page, url, {:remote => remote, :rel => page.next? ? 'next' : page.prev? ? 'prev' : nil} %>
-  </li>
+  <%= link_to page, url,
+                    { remote: remote,
+                      rel: page.next? ? 'next' : page.prev? ? 'prev' : nil,
+                      tabindex: 0,
+                      class: "paginate_button"
+                    } %>
 <% end %>

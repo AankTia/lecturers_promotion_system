@@ -1,4 +1,4 @@
-class PeriodicPrefermentDecorator < ApplicationDecorator
+class PeriodicPrefermentDecorator < DefaultStateTransitionDecorator
 
   def action
     [
@@ -23,7 +23,7 @@ class PeriodicPrefermentDecorator < ApplicationDecorator
       },
       {
         title: 'Status',
-        value: state
+        value: state_with_color
       }
     ]
   end

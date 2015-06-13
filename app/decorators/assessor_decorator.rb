@@ -1,4 +1,4 @@
-class AssessorDecorator < ApplicationDecorator
+class AssessorDecorator < ActiveInacticeStateTransitionDecorator
 
   def action
     active_inactive_state_action
@@ -66,7 +66,7 @@ class AssessorDecorator < ApplicationDecorator
       },
       {
         title: 'Status',
-        value: state
+        value: state_with_color
       }
     ]
   end

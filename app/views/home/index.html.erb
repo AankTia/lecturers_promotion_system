@@ -1,39 +1,43 @@
 <% @results.each do |result| %>
   <div class="row">
-    <div class="col-xs-12">
-        <div class="box">
-            <div class="box-header">
-                <h3 class="box-title"><%= "#{result[:start_date].to_formatted_s(:long)} - #{result[:end_date].to_formatted_s(:long)}" %></h3>
-                <div class="box-tools">
-                    <div class="input-group">
-                        <input type="text" name="table_search" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search">
-                        <div class="input-group-btn">
-                            <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- /.box-header -->
-            <div class="box-body table-responsive no-padding">
-                <table class="table table-hover">
-                  <tbody>
-                    <tr>
-                      <th>Dosen</th>
-                      <th>Nilai Pembobotan</th>
-                      <th>Nilai Rata-rata</th>
-                      <th>Penilai</th>
-                    </tr>
-                    <% result[:assessment_results].each do |assessment_result| %>
-                      <tr>
-                        <td><%= assessment_result.lecturer.name %></td>
-                        <td><%= assessment_result.weighting_value %></td>
-                        <td><%= assessment_result.average_value %></td>
-                        <td><%= assessment_result.assessor.name %></td>
-                      </tr>
-                    <% end %>
-                  </tbody>
-                </table>
-            </div><!-- /.box-body -->
-        </div><!-- /.box -->
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>
+            <%= "#{result[:start_date].to_formatted_s(:long)} - #{result[:end_date].to_formatted_s(:long)}" %>
+          </h2>
+          <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+            <li><a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content" style="display: block;">
+          <table class="table">
+              <thead>
+                  <tr>
+                    <th>Dosen</th>
+                    <th>Nilai Pembobotan</th>
+                    <th>Nilai Rata-rata</th>
+                    <th>Penilai</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <% result[:assessment_results].each do |assessment_result| %>
+                  <tr>
+                    <td><%= assessment_result.lecturer.name %></td>
+                    <td><%= assessment_result.weighting_value %></td>
+                    <td><%= assessment_result.average_value %></td>
+                    <td><%= assessment_result.assessor.name %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 <% end %>
+

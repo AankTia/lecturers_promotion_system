@@ -1,53 +1,64 @@
-<%= form_for(object) do |f| %>
+<%= form_for(object, html: { class: "form-horizontal form-label-left"}) do |f| %>
   <div class="box-body">
-    <div class="form-group <%= error_class(object, :list_of_ratings_execution_of_work_id)%>">
-      <label>
+    <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">
         DP3
+      </label>
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <%= f.collection_select(
+              :list_of_ratings_execution_of_work_id,
+              ListOfRatingsExecutionOfWork.completed, :id, :id,
+              { include_blank: true },
+              { class: "form-control #{error_class(object, :list_of_ratings_execution_of_work_id)}" }
+            ) %>
         <%= error_messages(object, :list_of_ratings_execution_of_work_id) %>
-      </label>
-      <%= f.collection_select(
-            :list_of_ratings_execution_of_work_id,
-            ListOfRatingsExecutionOfWork.completed, :id, :id,
-            { include_blank: true },
-            { class: "form-control" }
-          ) %>
+      </div>
     </div>
-    <div class="form-group <%= error_class(object, :rank_of_lecturer_id)%>">
-      <label>
+    <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">
         Pangat Baru
+      </label>
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <%= f.collection_select(
+              :rank_of_lecturer_id,
+              RankOfLecturer.all, :id, :name,
+              { include_blank: true },
+              { class: "form-control #{error_class(object, :rank_of_lecturer_id)}" })
+            %>
         <%= error_messages(object, :rank_of_lecturer_id) %>
-      </label>
-      <%= f.collection_select(
-            :rank_of_lecturer_id,
-            RankOfLecturer.all, :id, :name,
-            { include_blank: true },
-            { class: "form-control" })
-          %>
+      </div>
     </div>
-    <div class="form-group <%= error_class(object, :decision_letter_number)%>">
-      <label>
+    <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">
         No SK Kenaikan Pangkat
+      </label>
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <%= f.text_field :decision_letter_number, class: "form-control #{error_class(object, :decision_letter_number)}" %>
         <%= error_messages(object, :decision_letter_number) %>
-      </label>
-      <%= f.text_field :decision_letter_number, class: "form-control" %>
+      </div>
     </div>
-    <div class="form-group <%= error_class(object, :submissions_preferment_date)%>">
-      <label>
+    <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">
         Tanggal Pengajuan Kenaikan Pangat
+      </label>
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <%= f.date_field :submissions_preferment_date, class: "form-control #{error_class(object, :submissions_preferment_date)}" %>
         <%= error_messages(object, :submissions_preferment_date) %>
-      </label>
-      <%= f.date_field :submissions_preferment_date, class: "form-control" %>
+      </div>
     </div>
-    <div class="form-group <%= error_class(object, :preferment_date)%>">
-      <label>
+    <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">
         Tanggal Kenaikan Pangat
-        <%= error_messages(object, :preferment_date) %>
       </label>
-      <%= f.date_field :preferment_date, class: "form-control" %>
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <%= f.date_field :preferment_date, class: "form-control #{error_class(object, :preferment_date)}" %>
+        <%= error_messages(object, :preferment_date) %>
+      </div>
     </div>
   </div>
 
-  <div class="box-footer">
+  <div class="ln_solid"></div>
+  <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
     <%= f.submit 'Save', class: "btn btn-primary" %>
   </div>
 <% end %>

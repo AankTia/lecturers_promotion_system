@@ -1,22 +1,35 @@
-<%= form_for(object) do |f| %>
+<%= form_for(object, html: { class: "form-horizontal form-label-left"}) do |f| %>
   <div class="box-body">
-    <div class="form-group <%= error_class(object, :start_date)%>">
-      <label>
+    <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">
         Tanggal Awal
+      </label>
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <%= f.date_field  :start_date,
+                          class: "form-control #{error_class(object, :start_date)}" %>
         <%= error_messages(object, :start_date) %>
-      </label>
-      <%= f.date_field :start_date, class: "form-control" %>
-    </div>
-    <div class="form-group <%= error_class(object, :end_date)%>">
-      <label>
-        Tanggal Akhir
-        <%= error_messages(object, :end_date) %>
-      </label>
-      <%= f.date_field :end_date, class: "form-control" %>
+      </div>
     </div>
     <div class="form-group">
-      <label>Deskripsi</label>
-      <%= f.text_area :description, rows: 3, class: "form-control" %>
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">
+        Tanggal Akhir
+      </label>
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <%= f.date_field  :end_date,
+                          class: "form-control #{error_class(object, :end_date)}" %>
+        <%= error_messages(object, :end_date) %>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-md-3 col-sm-3 col-xs-12">
+        Deskripsi
+      </label>
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <%= f.text_area :description,
+                        rows: 3,
+                        class: "form-control #{error_class(object, :description)}" %>
+        <%= error_messages(object, :description) %>
+      </div>
     </div>
   </div>
 

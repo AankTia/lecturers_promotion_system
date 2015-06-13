@@ -22,28 +22,6 @@ class ApplicationDecorator < Draper::Decorator
     ].join(" ").html_safe
   end
 
-  def default_state_action
-    [
-      link_to_new,
-      (object.draft? ? link_to_edit : ''),
-      (object.draft? ? link_to_destroy : ''),
-      link_to_confirm,
-      link_to_revise,
-      link_to_cancel,
-      link_to_complete
-    ].join(" ").html_safe
-  end
-
-  def active_inactive_state_action
-    [
-      link_to_new,
-      (object.inactive? ? link_to_edit : ''),
-      (object.inactive? ? link_to_destroy : ''),
-      link_to_activate,
-      link_to_deactivate
-    ].join(" ").html_safe
-  end
-
   def default_index_data
     [
       {
@@ -88,30 +66,6 @@ class ApplicationDecorator < Draper::Decorator
 
   def link_to_destroy
     h.link_to 'Hapus', destroy_object_url,  method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm"
-  end
-
-  def link_to_confirm
-    h.link_to "Confirm", confirm_object_url, method: :post, class: "btn btn-info btn-sm" if object.can_confirm?
-  end
-
-  def link_to_revise
-    h.link_to "Revise", revise_object_url, method: :post, class: "btn btn-warning btn-sm" if object.can_revise?
-  end
-
-  def link_to_cancel
-    h.link_to "Cancel", cancel_object_url, method: :post, class: "btn btn-danger btn-sm" if object.can_cancel?
-  end
-
-  def link_to_complete
-    h.link_to "Complete", complete_object_url, method: :post, class: "btn btn-success btn-sm" if object.can_cancel?
-  end
-
-  def link_to_activate
-    h.link_to "Activate", activate_object_url, method: :post, class: "btn btn-success btn-sm" if object.can_activate?
-  end
-
-  def link_to_deactivate
-    h.link_to "Deactivate", deactivate_object_url, method: :post, class: "btn btn-success btn-sm" if object.can_deactivate?
   end
 
   def created_at_format
